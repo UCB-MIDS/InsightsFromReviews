@@ -1,2 +1,5 @@
 # Insights From Reviews
-Useful insights from product reviews
+We're trying to extract actionable information from the reviews
+
+## Inside the Clothing and Shoes category
+
