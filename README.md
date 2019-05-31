@@ -3,3 +3,4 @@ We're trying to extract actionable information from the reviews
 
 ## Inside the Clothing and Shoes category
 
+![](./pictures/wc-clothing-food.png)
