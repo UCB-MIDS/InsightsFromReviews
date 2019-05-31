@@ -1,6 +1,10 @@
 # Insights From Reviews
 We're trying to extract actionable information from the reviews
 
+## Inside the reviews for Home and Kitchen products
+
+![](./pictures/wc-home.png)
+
 ## Inside the reviews for Clothing and Shoes category
 
 ![](./pictures/wc-clothing-food.png)
@@ -10,7 +14,3 @@ We're trying to extract actionable information from the reviews
 
 ![](./pictures/wc-electronics.png)
 
-
-## Inside the reviews for Home and Kitchen products
-
-![](./pictures/wc-home.png)
