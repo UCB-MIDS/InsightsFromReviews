@@ -1,0 +1,9 @@
+<h1>Actionable Insights</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'ai:result' %}" method="post">
+{% csrf_token %}
+	<input type="text" name="query_text">
+	<input type="submit" value="Search">
+</form>
