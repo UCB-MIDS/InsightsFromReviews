@@ -18,7 +18,7 @@ def main(argv):
     file = '/Users/gkhanna/Downloads/reviews_Home_and_Kitchen_5.json'
     for opt, arg in opts:
         if opt == '-h':
-             print ('insights.py -i <dbfile> -a <asins>')
+             print ('insights.py -i <dbfile>')
              sys.exit()
         elif opt in ("-i", "--dbfile"):
              file = arg
