@@ -5,6 +5,9 @@ import nltk
 import sys
 import getopt
 import json
+import time
+
+# This implements the NLP pipeline
 
 def main(argv):
 
@@ -20,6 +23,7 @@ def main(argv):
     js = ""
     asin = ""
     count = 0
+    count_a = 0
     # Strings with reviews
     reviews_str = ""
     reviews_pos_str = ""
@@ -38,42 +42,54 @@ def main(argv):
         elif opt in ("-c", "--count"):
              count = int(arg)
 
-    # Load reviews in a Dictionary
-
     # ASIN corresponding to the Iron Skillet
     # asin = ['B00006JSUA']
+
+    # if asin and count, we load all reviews from the DB and filter while creating a string
+    if asin and count:
+        count_a = count
+        count = 0
+
+    # Load reviews to a dictionary
     if file:
         print('loading reviews from: ' + file)
         file_d = features.loadFromDb(file, count)
-        print(len(file_d))
-        print(file_d[0])
+        # print(len(file_d))
+        # print(file_d[0])
     elif js:
         print('loading reviews from the JSON String')
         file_d = features.loadFromJsonString(js, count)
-        print(len(file_d))
-        print(file_d[0])
+        # print(len(file_d))
+        # print(file_d[0])
     else:
         file = '/Users/gkhanna/Downloads/reviews_Home_and_Kitchen_5.json'
         print('loading reviews from: ' + file)
         file_d = features.loadFromDb(file, count)
-        print(len(file_d))
-        print(file_d[0])
+        # print(len(file_d))
+        # print(file_d[0])
 
-        # Extract all reviews into a string
-    reviews_str, reviews_pos_str, reviews_neg_str = features.loadToStringAndClassify(file_d, filter_l = asin )
-    print(len(reviews_str))
+    # Extract all reviews into lists
+    reviews_sent, reviews_pos_sent, reviews_neg_sent = features.loadTolistsAndClassify(file_d, filter_l = asin,
+    count = count_a )
+    # print(len(reviews_str))
 
+    # Convert to strings
+    reviews_str = features.loadToString(reviews_sent)
+    reviews_pos_str = features.loadToString(reviews_pos_sent)
+    reviews_neg_str = features.loadToString(reviews_neg_sent)
+
+    # Skipping summarization to preserve more information
     # Summarize all strings
-    reviews_str = features.summarizeString(reviews_str)
-    reviews_pos_str = features.summarizeString(reviews_pos_str)
-    reviews_neg_str = features.summarizeString(reviews_neg_str)
-    print(len(reviews_str))
+    # reviews_str = features.summarizeString(reviews_str)
+    # reviews_pos_str = features.summarizeString(reviews_pos_str)
+    # reviews_neg_str = features.summarizeString(reviews_neg_str)
+    # print(len(reviews_str))
 
     # Strings to sentences
     sent_full_review = features.stringToSentences(reviews_str)
-    sent_neg_review = features.stringToSentences(reviews_neg_str)
     sent_pos_review = features.stringToSentences(reviews_pos_str)
-    print(sent_full_review[0])
+    sent_neg_review = features.stringToSentences(reviews_neg_str)
+    # print(sent_full_review[0])
 
     # Getting the most relevant items from the reviews
     items = []
@@ -117,18 +133,25 @@ def main(argv):
     most_common_neg_real = languageUtils.getRealWords(most_common_neg)
     print(most_common_pos_real[:10])
 
+    # Latest time in a string
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    # Outputfile
+    print("File created at: " + timestr)
+    output_file_pos = "o_" + "pos_" + timestr + ".json"
+    output_file_neg = "o_" + "neg_" + timestr + ".json"
+
     # featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, sentence_count )
     # Getting sentences with the positive phrases
     out_json_s_pos = features.featuresAndContext(items, most_common_pos_real, sent_pos_review, 10, 10)
-    with open('pos_featues.json', 'w') as jf:
+    with open(output_file_pos, 'w') as jf:
         jf.write(out_json_s_pos)
-    print("Pos phrases written to: " + "pos_features.json")
+    print("Pos phrases written to: " + output_file_pos)
 
     # Getting sentences with the negative phrases
     out_json_s_neg = features.featuresAndContext(items, most_common_neg_real, sent_neg_review, 10, 10)
-    with open('neg_featues.json', 'w') as jfn:
+    with open(output_file_neg, 'w') as jfn:
         jfn.write(out_json_s_neg)
-    print("Neg phrases written to: " + "neg_features.json")
+    print("Neg phrases written to: " + output_file_neg)
 
     return out_json_s_pos, out_json_s_neg
 

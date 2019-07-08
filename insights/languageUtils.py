@@ -8,10 +8,17 @@ from nltk.corpus import opinion_lexicon
 from nltk.tokenize import treebank
 from tqdm import tqdm
 import inflect
+import spacy # version 2.1.3
+import neuralcoref # version 4.0
+from textblob import TextBlob
 
+'''
+Prerequisites
+nltk.download('averaged_perceptron_tagger')
+nltk.download('opinion_lexicon')
+python -m spacy download en_core_web_sm
+'''
 
-# nltk.download('averaged_perceptron_tagger')
-# nltk.download('opinion_lexicon')
 
 
 # Extracting key nouns from the text
@@ -322,3 +329,36 @@ def getRealWords(phrases):
                     #print(newword)
         new_phrases.append((newword,a[1]))
     return new_phrases
+
+def extractSubjective(review):
+    """
+    Input: entire review document (str)
+    Output: shortened review document with only subjective sentences
+    """
+    sent_list = nltk.sent_tokenize(review)
+    output = ""  # output string
+    for sent in sent_list:
+        result = TextBlob(sent)
+        if result.sentiment[1] > 0.20:  # keep sentences with sentiment > 0.25
+            output += sent+"  "
+    return output
+
+
+# spacy
+def replacePronouns(review):
+    """
+    Input: entire review document (str), multiple sentence_scores
+    Output: string, modified review with pronouns replaced.
+    """
+
+    # create spacy model
+    nlp = spacy.load('en_core_web_sm')
+    # add neuralcoref to spacy model
+    neuralcoref.add_to_pipe(nlp, greedyness=0.50, max_dist=75)
+
+    pn = nlp(review)  # pn = pronoun doc
+    # print("has coreferences?  {}".format(pn._.has_coref))
+    # print("Coreferences:")
+    # print(pn._.coref_clusters)
+
+    return pn._.coref_resolved

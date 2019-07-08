@@ -47,29 +47,45 @@ def loadFromJsonString(js, count = 0):
     return(file_d)
 
 
-def loadToStringAndClassify(file_d, filter_l = ""):
+def loadTolistsAndClassify(file_d, filter_l = "", count = 0):
     """
-    Consolidate review text into a string
-    If there is a list of ASIN's, only pick reviews for those
+    Consolidate review text into a list
+    If there is a filter (asin) only pick up count reviews for that asin
     Separate reviews into high(pos) and low(neg) ratings
 
     """
 
-    reviews_str = ""
-    reviews_pos_str = ""
-    reviews_neg_str = ""
+    n = 0
+    reviews_sent = []
+    reviews_neg_sent = []
+    reviews_pos_sent = []
 
     for r in tqdm(file_d):
         if (filter_l and (r['asin'] == filter_l)) or not filter_l:
-            # reviews_sent.append(r['reviewText'])
-            reviews_str = reviews_str + str(r['reviewText'])
+            reviews_sent.append(r['reviewText'])
             if ((r['overall'] == 1.0) or (r['overall'] == 2.0)):
-                reviews_neg_str = reviews_neg_str + str(r['reviewText'])
+                reviews_neg_sent.append(r['reviewText'])
             else:
-                reviews_pos_str = reviews_pos_str + str(r['reviewText'])
+                reviews_pos_sent.append(r['reviewText'])
 
-    print(str(len(reviews_str)) + " len reviews string, " + str(len(reviews_pos_str)) + " len Positive reviews string, " + str(len(reviews_neg_str)) + "len Negative reviews string ")
-    return reviews_str, reviews_pos_str, reviews_neg_str
+            n = n+1
+            if count > 0 and n == count:
+                break
+
+    print("Processed " + str(n) + " Reviews")
+    print(str(len(reviews_sent)) + " len all reviews")
+    print(str(len(reviews_pos_sent)) + " len Positive reviews")
+    print(str(len(reviews_neg_sent)) + " len Negative reviews")
+    return reviews_sent, reviews_pos_sent, reviews_neg_sent
+
+def loadToString(reviews_sent):
+    """
+    Consolidate review text into a string
+    """
+
+    reviews_str = "".join(s for s in reviews_sent)
+    print(str(len(reviews_str)) + " len reviews string")
+    return reviews_str
 
 
 # Summarization
