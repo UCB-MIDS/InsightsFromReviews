@@ -6,11 +6,12 @@ import time
 from tqdm import tqdm
 from gensim.summarization import summarize
 from nltk.tokenize.punkt import PunktSentenceTokenizer, PunktLanguageVars
+from collections import defaultdict
 
 
 # Loading Data
 
-def loadFromDb(file, count):
+def loadFromDb(file, count = 0):
     """
     Read count number of lines from the JSON DB into a dictionary
     Count = 0 reads in all the lines
@@ -29,8 +30,24 @@ def loadFromDb(file, count):
     print(str(len(file_d)) + " Reviews written to the dictionary ")
     return(file_d)
 
+def loadFromJsonString(js, count = 0):
+    """
+    Read count number of lines from the JSON string into a dictionary
+    Count = 0 reads in all the lines
 
-def loadToStringAndClassify(file_d, filter_l = []):
+    """
+    n = 0
+    file_d = []
+    for line in tqdm(js):
+        file_d.append(json.loads(line))
+        n =  n + 1
+        if count > 0 and n == count:
+            break
+    print(str(len(file_d)) + " Reviews written to the dictionary ")
+    return(file_d)
+
+
+def loadToStringAndClassify(file_d, filter_l = ""):
     """
     Consolidate review text into a string
     If there is a list of ASIN's, only pick reviews for those
@@ -43,7 +60,7 @@ def loadToStringAndClassify(file_d, filter_l = []):
     reviews_neg_str = ""
 
     for r in tqdm(file_d):
-        if (len(filter_l) and (r['asin'] in filter_l)) or len(filter_l) == 0:
+        if (filter_l and (r['asin'] == filter_l)) or not filter_l:
             # reviews_sent.append(r['reviewText'])
             reviews_str = reviews_str + str(r['reviewText'])
             if ((r['overall'] == 1.0) or (r['overall'] == 2.0)):
@@ -173,34 +190,46 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
     return extracted_neutral, extracted_pos, extracted_neg
 
 # Extract sentences with features
-def featuresAndContext(item_arr, opinion_phrases, sentence_arr ):
+def featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, sentence_count ):
     """ Extract sentences with features/opinion_phrases
     item_arr is to constrain the context to items under study
-    Output is extracted into a file
+    Output is returned as a JSON string
     """
 
-    count = 0
+
     # Latest time in a string
-    timestr = time.strftime("%Y%m%d-%H%M%S")
+    # timestr = time.strftime("%Y%m%d-%H%M%S")
     # Outputfile
-    print("File created at: " + timestr)
-    output_file_name = "o_" + timestr + ".txt"
-    f= open(output_file_name,"a+")
+    # print("File created at: " + timestr)
+    # output_file_name = "o_" + timestr + ".txt"
+    # output_json_name = "o_" + timestr + ".json"
+    # f= open(output_file_name,"a+")
+
+    # Output JSON
+    outDict = defaultdict(list)
+    outJSON = ''
+
+    p_count = 0
     # Go through the phrases and print sentences that contain them
     for phrase, freq in sorted(opinion_phrases, key = lambda phrase_freq: phrase_freq[1], reverse = True):
-        # Count of the number of sentences
-        pcount = 0
-        count+=1
-        f.write("\r\n")
-        f.write("---" + "Phrase > " + str(count) + " >>> " + phrase + "----\r\n\r\n")
+
+        # f.write("\r\n")
+        # f.write("---" + "Phrase > " + str(p_count) + " >>> " + phrase + "----\r\n\r\n")
+        p_count += 1
+        s_count = 0
         for l in sentence_arr:
             if languageUtils.normalise(phrase) in languageUtils.normalise(l):
-                pcount+=1
-                f.write("---" + "example > " + str(pcount) + " >>> " + "----\r\n")
-                f.write("%s\r\n" %(l))
-                if pcount==4:
+                # f.write("---" + "example > " + str(s_count) + " >>> " + "----\r\n")
+                # f.write("%s\r\n" %(l))
+                outDict[phrase].append(l)
+                s_count += 1
+                if s_count == sentence_count:
                     break
-        if count==4:
+        if p_count == phrase_count:
             break
-    return output_file_name
-    f.close()
+    outJSON = json.dumps(outDict, sort_keys = True, indent = 4)
+    # with open(output_json_name, 'w') as jf:
+        # json.dump(outDict, jf, sort_keys = True, indent=4)
+
+    # f.close()
+    return outJSON
