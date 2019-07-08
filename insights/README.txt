@@ -21,5 +21,8 @@ This loads only first 500 reviews from the default DB
 python insights.py -a 'B00006JSUA'
 Loads all reviews matching the ASIN from the default DB
 
+python insights.py -a 'B00006JSUA' -c 500
+Loads count reviews matching the ASIN from the default DB
+
 python insights.py -j "LONG STRING"
 Loads all reviews from the JSON string
