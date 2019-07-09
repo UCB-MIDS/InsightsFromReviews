@@ -8,7 +8,6 @@ from gensim.summarization import summarize
 from nltk.tokenize.punkt import PunktSentenceTokenizer, PunktLanguageVars
 from collections import defaultdict
 
-
 # Loading Data
 
 def loadFromDb(file, count = 0):
@@ -29,23 +28,8 @@ def loadFromDb(file, count = 0):
                 break
     print(str(len(file_d)) + " Reviews written to the dictionary ")
     return(file_d)
-"""
-def loadFromJsonString(js, count = 0):
-    """
-    Read count number of lines from the JSON string into a dictionary
-    Count = 0 reads in all the lines
 
-    """
-    n = 0
-    file_d = []
-    for line in tqdm(js):
-        file_d.append(json.loads(line))
-        n =  n + 1
-        if count > 0 and n == count:
-            break
-    print(str(len(file_d)) + " Reviews written to the dictionary ")
-    return(file_d)
-"""
+
 def loadFromJsonString(js, count = 0):
     """
     Read count number of lines from the JSON string into a dictionary
