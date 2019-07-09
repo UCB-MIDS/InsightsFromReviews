@@ -29,7 +29,7 @@ def loadFromDb(file, count = 0):
                 break
     print(str(len(file_d)) + " Reviews written to the dictionary ")
     return(file_d)
-
+"""
 def loadFromJsonString(js, count = 0):
     """
     Read count number of lines from the JSON string into a dictionary
@@ -45,6 +45,15 @@ def loadFromJsonString(js, count = 0):
             break
     print(str(len(file_d)) + " Reviews written to the dictionary ")
     return(file_d)
+"""
+def loadFromJsonString(js, count = 0):
+    """
+    Read count number of lines from the JSON string into a dictionary
+    Count = 0 reads in all the lines
+
+    """
+    print(str(len(js)) + " Reviews written to the dictionary ")
+    return(js)
 
 
 def loadTolistsAndClassify(file_d, filter_l = "", count = 0):
