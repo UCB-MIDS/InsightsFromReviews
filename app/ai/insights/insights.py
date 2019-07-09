@@ -115,28 +115,27 @@ def main(argv):
     """
 
     extracted_neutral = []
-    extracted_neg = []
     extracted_pos = []
-    extracted_neutral, extracted_neg, extracted_pos = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
+    extracted_neg = []
+    
+    extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
 
     # Frequency distribution
     freqdist_pos = nltk.FreqDist(word for word in extracted_pos)
     most_common_pos = freqdist_pos.most_common()
     freqdist_neg = nltk.FreqDist(word for word in extracted_neg)
     most_common_neg = freqdist_neg.most_common()
-    print(len(most_common_pos))
-    print(len(most_common_neg))
-    print(most_common_pos[:10])
 
     # Convert phrases to real words
     most_common_pos_real = languageUtils.getRealWords(most_common_pos)
+    print(most_common_pos_real)
     most_common_neg_real = languageUtils.getRealWords(most_common_neg)
-    print(most_common_pos_real[:10])
+    print(most_common_neg_real)
 
     # Latest time in a string
     timestr = time.strftime("%Y%m%d-%H%M%S")
     # Outputfile
-    print("File created at: " + timestr)
+    print("Files created at: " + timestr)
     output_file_pos = "o_" + "pos_" + timestr + ".json"
     output_file_neg = "o_" + "neg_" + timestr + ".json"
 

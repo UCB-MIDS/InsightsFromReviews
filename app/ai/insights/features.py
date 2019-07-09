@@ -175,12 +175,12 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
     neg_sen_tok_tagged = []
     neutral_sen_tok_tagged = []
 
+    for sentence_t in tqdm(neutral_sen_tok):
+        neutral_sen_tok_tagged.append(nltk.tag.pos_tag(sentence_t))
     for sentence_t in tqdm(pos_sen_tok):
         pos_sen_tok_tagged.append(nltk.tag.pos_tag(sentence_t))
     for sentence_t in tqdm(neg_sen_tok):
         neg_sen_tok_tagged.append(nltk.tag.pos_tag(sentence_t))
-    for sentence_t in tqdm(neutral_sen_tok):
-        neutral_sen_tok_tagged.append(nltk.tag.pos_tag(sentence_t))
 
     print("POS Tagged : " + str(len(neutral_sen_tok_tagged)) + " neutral sentences")
     print("POS Tagged : " + str(len(pos_sen_tok_tagged)) + " positive sentences")
@@ -191,9 +191,9 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
     extracted_pos = languageUtils.extractPhrasesFromTagged(pos_sen_tok_tagged, feature_patterns)
     extracted_neg = languageUtils.extractPhrasesFromTagged(neg_sen_tok_tagged, feature_patterns)
 
-    print("Extraced : " + str(len(extracted_neutral)) + " from neutral sentences")
-    print("Extracted : " + str(len(extracted_pos)) + " from positive sentences")
-    print("Extracted : " + str(len(extracted_neg)) + " from negative sentences")
+    print("Extracted : " + str(len(extracted_neutral)) + " phrases from neutral sentences")
+    print("Extracted : " + str(len(extracted_pos)) + " phrases from positive sentences")
+    print("Extracted : " + str(len(extracted_neg)) + " phrases from negative sentences")
 
     return extracted_neutral, extracted_pos, extracted_neg
 
