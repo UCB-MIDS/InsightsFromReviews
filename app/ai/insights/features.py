@@ -65,10 +65,9 @@ def loadTolistsAndClassify(file_d, filter_l = "", count = 0):
             if count > 0 and n == count:
                 break
 
-    print("Processed " + str(n) + " Reviews")
-    print(str(len(reviews_sent)) + " len all reviews")
-    print(str(len(reviews_pos_sent)) + " len Positive reviews")
-    print(str(len(reviews_neg_sent)) + " len Negative reviews")
+    print("Processed and Classified " + str(n) + " Reviews")
+    print(str(len(reviews_pos_sent)) + " Positive reviews")
+    print(str(len(reviews_neg_sent)) + " Negative reviews")
     return reviews_sent, reviews_pos_sent, reviews_neg_sent
 
 def loadToString(reviews_sent):
@@ -77,7 +76,7 @@ def loadToString(reviews_sent):
     """
 
     reviews_str = "".join(s for s in reviews_sent)
-    print(str(len(reviews_str)) + " len reviews string")
+    print("Converted to " + str(len(reviews_str)) + " len reviews string")
     return reviews_str
 
 

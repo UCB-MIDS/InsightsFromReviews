@@ -95,7 +95,7 @@ def main(argv):
     items = []
     rules = []
     minSupport = .1
-    minConfidence = .3
+    minConfidence = .1
 
     items, rules = languageUtils.getItems(sent_full_review, minSupport, minConfidence)
     print(len(items))
