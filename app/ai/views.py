@@ -18,7 +18,13 @@ proxies = {'http': random.choice(proxies_list)}
 # Create your views here.
 def index(request):
     #request.session['query_text'] = 'wassup'
-    test_review = [{"reviewText": "This is a lovely product. Great quality, Cast Iron.", "overall": 5.0},{"reviewText": "I hate this thing. This is aweful. I'd like to return this item today.", "overall": 1.0}]
+    test_review = [{"reviewText": "A true cast iron pan is super smooth.", "overall": 5.0},
+                   {"reviewText": "Enter the Lodge 12 inch cast iron skillet.", "overall": 4.0},
+                   {"reviewText": "Just wash with hot water, without soap.", "overall": 3.0},
+                   {"reviewText": "This was horrible.I'm used to cast iron, for sure.", "overall": 1.0},
+                   {"reviewText": "Only hot water and maybe salt if you need an abrasive.", "overall": 2.0},
+                   {"reviewText": "Oil first, heat it, then food in.I'm very disappointed.This is a great skillet, especially for the price.", "overall": 1.0}]
+                  
 
     insights.main(["-j", test_review])
     return render(request, 'ai/index.html')
