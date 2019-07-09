@@ -1,7 +1,7 @@
 import nltk
 import json
 import sys
-import languageUtils
+from . import languageUtils
 import time
 from tqdm import tqdm
 from gensim.summarization import summarize
