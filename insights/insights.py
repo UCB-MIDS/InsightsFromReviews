@@ -114,6 +114,8 @@ def main(argv):
         P8:{<VBN|VBD><RB|RBR|RBS>}
     """
 
+    feature_patterns1 = "NP:{<dt|pp|cd>?<jj||jjr|jjs>*<nn|nns|prp|nnp|in|prp\$>+<vbd|vbz|vbn|vbp|in>*<jj|rb>*<prp|nn|nns>*}"
+
     extracted_neutral = []
     extracted_neg = []
     extracted_pos = []

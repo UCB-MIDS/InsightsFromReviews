@@ -18,9 +18,23 @@ proxies = {'http': random.choice(proxies_list)}
 # Create your views here.
 def index(request):
     #request.session['query_text'] = 'wassup'
-    #test_review = [{"reviewText": "This is a lovely product. Great quality, Cast Iron.", "overall": 5.0},{"reviewText": "Only hot water and maybe salt if you need an abrasive", "overall": 1.0}]
-    #insights.main(["-j", test_review])
+    test_review = [{"reviewText":"A true cast iron pan is super smooth.", "overall":5.0},
+        {"reviewText":"Enter the Lodge 12 inch cast iron skillet.", "overall":4.0},
+        {"reviewText":"Just wash with hot water, without soap.", "overall":3.0},
+        {"reviewText":"This is an absolutely amazing skillet!!  I use it ALL the time!!  I re-season it a bit as well to keep it going strong!", "overall":4.0},
+        {"reviewText":"I wish I'd gotten a good cast iron skillet years ago, but I do enjoy making up for lost time!", "overall":4.0},
+        {"reviewText":"My mother and mother-in-law both cook with skillets that have been well seasoned, and I'm very happy to achieve the same with mine.I love using my Cast Iron skillets just love them.", "overall":4.0},
+        {"reviewText":"I like all my cast iron. This one though the tissue I wiped it with was black and wouldn't stop. It peeled a bit on the handle. I didn't get it. Out of all of my iron ware this one was so disgusting I washed it with soap. It's good now.", "overall":4.0},
+        {"reviewText":"Just say no to chemical treatments on non stick pans, get yourself and your friends a few sizes of cast iron and have pans that you can pass down to your children, without all those unknown chemicals that are such a part of pans for the last few decades.", "overall":4.0},
+        {"reviewText":"I've always bought the regular Lodge skillets and loved them.  Went with the pre-seasoned this time because I wanted this size.Wow, what a pain. badly pre-seasoned!). The coating flaked off, got my hands black, and smelled really rusty. This was horrible.I'm used to cast iron, for sure.", "overall":1.0},
+        {"reviewText":"Only hot water and maybe salt if you need an abrasive.", "overall":2.0},
+        {"reviewText":"I'm not a cook and didn't know what cast iron cooked like.", "overall":2.0},
+        {"reviewText":"This was horrible.I'm used to cast iron, for sure.", "overall":1.0},
+        {"reviewText":"Immediately, I noticed this pan seemed thinner and cheaper made. I noticed the bottom center seemed to be deteriorating. After 5 uses, I noticed what seems to be a crack forming. Now it will be thrown away. Very disappointed!", "overall":2.0},
+        {"reviewText":"Oil first, heat it, then food in. I'm very disappointed. This is a great skillet, especially for the price.", "overall":1.0}]
 
+
+    out_json_s_pos, out_json_s_neg = insights.main(["-j", test_review])
     return render(request, 'ai/index.html')
 
 def result(request):
@@ -32,7 +46,7 @@ def result(request):
     last_updated_str = '0000'
     last_updated = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [asin_list[0]])
     for dt in last_updated:
-        last_updated_str = dt.update_date    
+        last_updated_str = dt.update_date
 
     product_name, product_image_url, product_rating, product_review_cnt, product_price = scrape_product_info(asin_list[0])
 
@@ -56,7 +70,7 @@ def update(request):
         else:
             review_str = review_str + new_review_str
 
-    
+
     today_dt = datetime.datetime.now().strftime('%Y%m%d')
 
     insight = Insight(asin=asin_list[0], update_date=today_dt)
@@ -186,7 +200,7 @@ def parse_page(original_text, parse_text_start, parse_text_end, string_list):
         cnt=0
         while cnt < 10:
             parsed_text = original_text_processing[:original_text_processing.find(parse_text_end)]
-            
+
             parsed_list.append(parsed_text)
             parsed_string = parsed_string + parsed_text
 
