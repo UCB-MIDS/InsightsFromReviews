@@ -22,9 +22,23 @@ class Insight(models.Model):
 
     asin = models.CharField(max_length=20)
     update_date = models.CharField(max_length=200)
+    insight_seq = models.IntegerField(default=0)
     insight_type = models.CharField(max_length=200)
     insight_phrase = models.CharField(max_length=200)
     insight_text = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return self.asin
+
+class AmazonProduct(models.Model):
+
+    asin = models.CharField(max_length=20)
+    update_date = models.CharField(max_length=200)
+    product_name = models.CharField(max_length=200)
+    product_rating = models.CharField(max_length=200)
+    product_review_cnt = models.IntegerField(default=0)
+    product_price = models.CharField(max_length=200)
+    product_image_url = models.CharField(max_length=200)
 
     def __str__(self):
         return self.asin

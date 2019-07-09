@@ -3,7 +3,7 @@ from django.template import loader
 from django.shortcuts import render
 from fake_useragent import UserAgent
 
-from .models import AmazonReview, Insight
+from .models import AmazonReview, Insight, AmazonProduct
 from django.db.models import Max
 
 import random
@@ -18,21 +18,29 @@ proxies = {'http': random.choice(proxies_list)}
 # Create your views here.
 def index(request):
     #request.session['query_text'] = 'wassup'
-    test_review = [{"reviewText": "This is a lovely product. Great quality, Cast Iron.", "overall": 5.0},{"reviewText": "I hate this thing. This is aweful. I'd like to return this item today.", "overall": 1.0}]
+    #test_review = [{"reviewText": "This is a lovely product. Great quality, Cast Iron.", "overall": 5.0},{"reviewText": "Only hot water and maybe salt if you need an abrasive", "overall": 1.0}]
+    #insights.main(["-j", test_review])
 
-    insights.main(["-j", test_review])
     return render(request, 'ai/index.html')
 
 def result(request):
     query_text = request.POST.get('query_text')
+
     asin_list = asin_scrape(query_text)
+    print(query_text)
 
     last_updated_str = '0000'
     last_updated = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [asin_list[0]])
     for dt in last_updated:
         last_updated_str = dt.update_date    
 
-    context = {'last_updated_str': last_updated_str,'query_text': query_text, 'asin':asin_list[0]}
+    product_name, product_image_url, product_rating, product_review_cnt, product_price = scrape_product_info(asin_list[0])
+
+    context = {'last_updated_str': last_updated_str,'query_text': query_text, 'asin':asin_list[0],\
+        'product_name':product_name, 'product_rating':product_rating, 'product_review_cnt':product_review_cnt,\
+        'product_price':product_price, 'product_image_url':product_image_url}
+
+    
 
     return render(request, 'ai/result.html', context)
 
@@ -60,7 +68,6 @@ def update(request):
 
 
 def update_result_old(request):
-    
     return HttpResponse(response)
 
 def asin_scrape(query_text):
@@ -137,6 +144,38 @@ def review_scrape(product_asin, page_number):
 
     return asin
 
+def scrape_product_info(product_asin):
+    url_pre = 'https://www.amazon.com/dp/'
+
+    url = url_pre + product_asin
+    print(url)
+    response = requests.get(url, headers=headers, proxies=proxies).text
+
+    product_name  = parse_string(response, '<span class="a-list-item"><div class="a-section"><img alt="', '" src="')
+    print (" product_name ###### : " + product_name)
+
+    product_image_url  = parse_string(response, 'data-old-hires="', '"  class="')
+    print (" product_image_url ###### : " + product_image_url)
+
+    product_rating  = parse_string(response, 'averageStarRating"><span class="a-icon-alt">', ' out of 5 stars</span>')
+    print (" product_rating ###### : " + product_rating)
+
+    product_price  = parse_string(response, 'priceBlockBuyingPriceString">', '</span>')
+    print (" product_price ###### : " + product_price)
+
+    product_review_cnt  = parse_string(response, '<span id="acrCustomerReviewText" class="a-size-base">', ' customer reviews</span>')
+    product_review_cnt = product_review_cnt.replace(",", "")
+    print (" product_review_cnt ###### : " + product_review_cnt)
+
+    amazonProduct = AmazonProduct(product_name=product_name, product_image_url=product_image_url,\
+        asin=product_asin, product_rating=product_rating, product_review_cnt=product_review_cnt, \
+        product_price = product_price)
+    amazonProduct.save()
+
+    return product_name, product_image_url, product_rating, product_review_cnt, product_price
+
+    
+
 def parse_page(original_text, parse_text_start, parse_text_end, string_list):
     parsed_list = []
     parsed_string = ""
@@ -168,7 +207,6 @@ def parse_page(original_text, parse_text_start, parse_text_end, string_list):
     else:
         return parsed_list
 
-
 def parse_string(original_text, parse_text_start, parse_text_end):
     parsed_string = ""
     if(original_text.find(parse_text_start) > 0):
@@ -186,6 +224,3 @@ def trim_string(original_text, parse_text_start, parse_text_end):
         original_text_processing = original_text[original_text.find(parse_text_start)+len(parse_text_start):]
         original_text_processing = original_text_processing[original_text_processing.find(parse_text_end)+len(parse_text_end):]
     return original_text_processing
-
-
-
