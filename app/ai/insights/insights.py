@@ -1,5 +1,5 @@
-import languageUtils
-import features
+from . import languageUtils
+from . import features
 from tqdm import tqdm
 import nltk
 import sys
