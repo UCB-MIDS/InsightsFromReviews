@@ -17,6 +17,7 @@ Thumbs.db
 *.log
 *.sql
 *.sqlite
+*.sqlite3
 
 # Compiled source #
 ###################

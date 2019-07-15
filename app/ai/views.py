@@ -9,15 +9,148 @@ from django.db.models import Max
 import random
 import requests
 import datetime
+import ast
 from .insights import insights
 
 headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36'}
-proxies_list = ["35.198.69.233:80","178.128.11.215:80","54.226.53.87:80"]
+#proxies_list = ["35.198.69.233:80","178.128.11.215:80","54.226.53.87:80"]
+# https://www.us-proxy.org/
+proxies_list = [ "165.227.215.71", "67.205.149.230", "165.22.35.148", "159.203.91.6", "138.197.204.55", "165.227.215.62", "67.205.132.241", "67.205.172.239"]
 proxies = {'http': random.choice(proxies_list)}
 
 # Create your views here.
 def index(request):
-    #request.session['query_text'] = 'wassup'
+    return render(request, 'ai/index.html')
+
+def result(request):
+    query_text = request.POST.get('query_text')
+
+    #asin_list = asin_scrape(query_text)
+    asin_list = get_asin(query_text)
+    print(query_text)
+
+    product_asin = str(asin_list[0])
+    print ("product_asin from result() : " + product_asin)  
+
+    # Get Product Info
+    update_date = product_name =  product_image_url = product_rating = product_review_cnt = product_price = ''
+    product_info = AmazonProduct.objects.raw("SELECT id, update_date, product_name, product_rating, product_review_cnt, product_price, product_image_url \
+        FROM ai_amazonproduct WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [product_asin])
+    if len(product_info) > 0 :
+        for p in product_info:
+            update_date = p.update_date
+            product_name = p.product_name
+            product_image_url = p.product_image_url
+            product_rating = p.product_rating
+            product_review_cnt = p.product_review_cnt
+            product_price = p.product_price
+    # if no date, scrape from Amazon
+    else : 
+        product_name, product_image_url, product_rating, product_review_cnt, product_price, update_date = \
+            scrape_product_info(asin_list[0])
+
+    # Get Update date
+    # last_updated_str = '0000'
+    # last_updated = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [asin_list[0]])
+    # for dt in last_updated:
+    #    last_updated_str = dt.update_date
+
+    
+    insight_positive_list = get_insights(str(product_asin), 'P')
+    insight_negative_list = get_insights(str(product_asin), 'N')
+
+    context = {'update_date': update_date,'query_text': query_text, 'asin':asin_list[0],\
+        'product_name':product_name, 'product_rating':product_rating, 'product_review_cnt':product_review_cnt,\
+        'insight_negative_list':insight_negative_list, 'insight_positive_list':insight_positive_list,\
+        'product_price':product_price, 'product_image_url':product_image_url}
+
+    return render(request, 'ai/result.html', context)
+
+def update(request):
+    query_text = request.POST.get('query_text')
+
+    print ("Now updating : " + query_text)
+
+    asin_list = get_asin(query_text)
+    product_asin = str(asin_list[0])
+    print ("product_asin from result() : " + product_asin)
+
+    model_input = []
+    for x in range(10):
+        new_model_input = review_scrape(product_asin,x)
+        if len(new_model_input) < 10:
+            break
+        else:
+            model_input = model_input + new_model_input
+
+    print("######### : " + str(model_input))
+
+    out_json_s_pos, out_json_s_neg = insights.main(["-j", model_input])
+    out_json_s_pos_dict = ast.literal_eval(out_json_s_pos)
+    out_json_s_neg_dict = ast.literal_eval(out_json_s_neg)
+    print ("++++ Positive : " + out_json_s_pos)
+    print ("---- Negative : " + out_json_s_neg)
+
+    today_dt = datetime.datetime.now().strftime('%Y%m%d')
+    update_dt = "0000"
+
+    insight = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [product_asin])
+    if len(insight) > 0 :
+        for p in insight:
+            update_dt = p.update_date
+    print("update_dt : " + update_dt + " / " + product_asin)
+
+    cnt = 0
+    response = ""
+    if today_dt != update_dt:
+        if len(out_json_s_pos_dict) > 0:
+            for x in out_json_s_pos_dict:
+                x_list = out_json_s_pos_dict.get(x)
+                cnt = 0
+                for y in x_list:
+                    insight = Insight(asin=product_asin, update_date=today_dt, insight_seq=cnt, insight_type='P',\
+                        insight_phrase=x, insight_text=y)
+                    insight.save()
+                    cnt = cnt + 1
+            cnt = 0
+        if len(out_json_s_neg_dict) > 0:
+            for x in out_json_s_neg_dict:
+                x_list = out_json_s_neg_dict.get(x)
+                cnt = 0
+                for y in x_list:
+                    insight = Insight(asin=product_asin, update_date=today_dt, insight_seq=cnt, insight_type='N',\
+                        insight_phrase=x, insight_text=y)
+                    insight.save()
+                    cnt = cnt + 1
+        response = "Updated for the query : " + query_text + " <br> >> Product ASIN : " + product_asin
+    else:
+        response = "Have been already updated today for the query : " + query_text + "  / today : " + today_dt
+
+    return HttpResponse(response)
+
+
+def get_insights(asin, insight_type):
+    print("asin from get_insights : "+ asin)
+
+    update_dt = ""
+    insight = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [asin])
+    if len(insight) > 0 :
+        for p in insight:
+            update_dt = p.update_date
+
+    insights = Insight.objects.raw("SELECT id, insight_phrase, insight_text FROM ai_insight WHERE asin= %s AND insight_type = %s AND update_date = %s ORDER BY update_date DESC ", [asin, insight_type, update_dt])
+    insight_list = []
+    cnt = 0
+    for i in insights:
+        insight_list.append(['insight_'+insight_type+str(cnt), i.insight_phrase, i.insight_text])
+        cnt = cnt+1
+    
+    print(" ###  insight_type : " + insight_type)
+    print(" ###  insight_list : " + str(insight_list))
+    return insight_list
+
+
+def test_insights():
     test_review = [{"reviewText":"A true cast iron pan is super smooth.", "overall":5.0},
         {"reviewText":"Enter the Lodge 12 inch cast iron skillet.", "overall":4.0},
         {"reviewText":"Just wash with hot water, without soap.", "overall":3.0},
@@ -33,58 +166,13 @@ def index(request):
         {"reviewText":"Immediately, I noticed this pan seemed thinner and cheaper made. I noticed the bottom center seemed to be deteriorating. After 5 uses, I noticed what seems to be a crack forming. Now it will be thrown away. Very disappointed!", "overall":2.0},
         {"reviewText":"Oil first, heat it, then food in. I'm very disappointed. This is a great skillet, especially for the price.", "overall":1.0}]
 
-
     out_json_s_pos, out_json_s_neg = insights.main(["-j", test_review])
-    return render(request, 'ai/index.html')
 
-def result(request):
-    query_text = request.POST.get('query_text')
-
-    asin_list = asin_scrape(query_text)
-    print(query_text)
-
-    last_updated_str = '0000'
-    last_updated = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [asin_list[0]])
-    for dt in last_updated:
-        last_updated_str = dt.update_date
-
-    product_name, product_image_url, product_rating, product_review_cnt, product_price = scrape_product_info(asin_list[0])
-
-    context = {'last_updated_str': last_updated_str,'query_text': query_text, 'asin':asin_list[0],\
-        'product_name':product_name, 'product_rating':product_rating, 'product_review_cnt':product_review_cnt,\
-        'product_price':product_price, 'product_image_url':product_image_url}
-
-    
-
-    return render(request, 'ai/result.html', context)
-
-def update(request):
-    query_text = request.POST.get('query_text')
-
-    asin_list = asin_scrape(query_text)
-    review_str = ""
-    for x in range(2):
-        new_review_str = review_scrape(asin_list[0],x)
-        if new_review_str == "NO_SEARCH_RESULT":
-            break
-        else:
-            review_str = review_str + new_review_str
-
-
-    today_dt = datetime.datetime.now().strftime('%Y%m%d')
-
-    insight = Insight(asin=asin_list[0], update_date=today_dt)
-    insight.save()
-
-    response = "Updating for the query : " + query_text + " <br> >> Product ASIN : " + str(asin_list[0])
-
-    return HttpResponse(response)
-
-
-def update_result_old(request):
-    return HttpResponse(response)
+    print ("++++ Positive : " + out_json_s_pos)
+    print ("---- Negative : " + out_json_s_neg)
 
 def asin_scrape(query_text):
+    print("query_text : " + str(query_text))
     url_pre = 'https://www.amazon.com/s?k='
     url_post = '&ref=nb_sb_noss_2'
 
@@ -96,6 +184,32 @@ def asin_scrape(query_text):
 
     response = requests.get(url, headers=headers, proxies=proxies).text
     parsed_asin_list = parse_page(response, parse_text_start, parse_text_end, 'list')
+
+    return parsed_asin_list
+
+def get_asin(query_text):
+    print("query_text : " + str(query_text))
+    url_pre = 'https://www.amazon.com/s?k='
+    url_post = '&ref=nb_sb_noss_2'
+
+    trim_pre = '<span data-component-type="s-search-results"'
+    parse_text_start = '<div data-asin="'
+    parse_text_end = '" data-index="'
+
+    ad_parse_text_start = '&quot;name&quot;:&quot;sp-info-popover-'
+    ad_parse_text_end = '&quot;'
+
+    url = url_pre + query_text + url_post
+    print(url)
+    response = requests.get(url, headers=headers, proxies=proxies).text
+    trim_response = trim_string_pre(response, trim_pre)
+
+    parsed_asin_list = parse_page(trim_response, parse_text_start, parse_text_end, 'list')
+    parsed_ad_asin_list = parse_page(response, ad_parse_text_start, ad_parse_text_end, 'list')
+
+    for x in parsed_ad_asin_list:
+        if x in parsed_asin_list:
+            parsed_asin_list.remove(x)
 
     return parsed_asin_list
 
@@ -111,6 +225,8 @@ def review_scrape(product_asin, page_number):
     response = requests.get(url, headers=headers, proxies=proxies).text
 
     parsed_review = parse_page(response, parse_text_start, parse_text_end, 'list')
+
+    model_input = []
 
     asin = product_asin
     for x in range(len(parsed_review)):
@@ -128,8 +244,8 @@ def review_scrape(product_asin, page_number):
         parse_block = trim_string(parse_block, 'ASIN=', '"><i data-hook=')
         print (" asin ###### : " + asin)
 
-        review_rating = parse_string(parse_block, '<span class="a-icon-alt">', '</span></i>')
-        parse_block = trim_string(parse_block, '<span class="a-icon-alt">', '</span></i>')
+        review_rating = parse_string(parse_block, '<span class="a-icon-alt">', ' out of 5 stars</span></i>')
+        parse_block = trim_string(parse_block, '<span class="a-icon-alt">', ' out of 5 stars</span></i>')
         print (" review_rating ###### : " + review_rating)
 
         review_title = parse_string(parse_block, '<span class="">', '</span>')
@@ -150,13 +266,14 @@ def review_scrape(product_asin, page_number):
         parse_block = trim_string(parse_block, 'a-color-tertiary cr-vote-text">', '</span>')
         print (" review_helpful ###### : " + review_helpful)
 
+        model_input = model_input + [{"reviewText":review_text, "overall":float(review_rating)}]
 
         amazonReview = AmazonReview(reviewer_id=reviewer_id, reviewer_name=reviewer_name,\
             asin=asin, review_rating=review_rating, review_title=review_title,\
             review_date=review_date, review_text=review_text, review_helpful=review_helpful)
         amazonReview.save()
 
-    return asin
+    return model_input
 
 def scrape_product_info(product_asin):
     url_pre = 'https://www.amazon.com/dp/'
@@ -181,12 +298,14 @@ def scrape_product_info(product_asin):
     product_review_cnt = product_review_cnt.replace(",", "")
     print (" product_review_cnt ###### : " + product_review_cnt)
 
+    update_date = datetime.datetime.now().strftime('%Y%m%d')
+
     amazonProduct = AmazonProduct(product_name=product_name, product_image_url=product_image_url,\
         asin=product_asin, product_rating=product_rating, product_review_cnt=product_review_cnt, \
-        product_price = product_price)
+        product_price = product_price, update_date=update_date)
     amazonProduct.save()
 
-    return product_name, product_image_url, product_rating, product_review_cnt, product_price
+    return product_name, product_image_url, product_rating, product_review_cnt, product_price, update_date
 
     
 
@@ -201,11 +320,12 @@ def parse_page(original_text, parse_text_start, parse_text_end, string_list):
         while cnt < 10:
             parsed_text = original_text_processing[:original_text_processing.find(parse_text_end)]
 
-            parsed_list.append(parsed_text)
-            parsed_string = parsed_string + parsed_text
+            if len(parsed_text) > 0:
+                parsed_list.append(parsed_text)
+                parsed_string = parsed_string + parsed_text
 
-            cnt += 1
-            print ("###### : " + str(cnt) + " :::::: " + parsed_text[:100])
+                cnt += 1
+                print ("###### : " + str(cnt) + " :::::: " + parsed_text[:100])
 
             original_text_processing = original_text_processing[original_text_processing.find(parse_text_end)+len(parse_text_end):]
             if(original_text_processing.find(parse_text_start) > 0):
@@ -237,4 +357,10 @@ def trim_string(original_text, parse_text_start, parse_text_end):
     if(original_text.find(parse_text_start) > 0):
         original_text_processing = original_text[original_text.find(parse_text_start)+len(parse_text_start):]
         original_text_processing = original_text_processing[original_text_processing.find(parse_text_end)+len(parse_text_end):]
+    return original_text_processing
+
+def trim_string_pre(original_text, parse_text_start):
+    original_text_processing = original_text
+    if(original_text.find(parse_text_start) > 0):
+        original_text_processing = original_text[original_text.find(parse_text_start)+len(parse_text_start):]
     return original_text_processing
