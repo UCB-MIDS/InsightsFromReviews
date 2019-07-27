@@ -1,5 +1,6 @@
 from . import languageUtils
 from . import features
+import insights.features
 from tqdm import tqdm
 import nltk
 import sys
@@ -78,12 +79,12 @@ def main(argv):
     reviews_pos_str = features.loadToString(reviews_pos_sent)
     reviews_neg_str = features.loadToString(reviews_neg_sent)
 
-    # Skipping summarization to preserve more information
+
     # Summarize all strings
-    # reviews_str = features.summarizeString(reviews_str)
-    # reviews_pos_str = features.summarizeString(reviews_pos_str)
-    # reviews_neg_str = features.summarizeString(reviews_neg_str)
-    # print(len(reviews_str))
+    reviews_str = features.summarizeString(reviews_str)
+    reviews_pos_str = features.summarizeString(reviews_pos_str)
+    reviews_neg_str = features.summarizeString(reviews_neg_str)
+    print(len(reviews_str))
 
     # Strings to sentences
     sent_full_review = features.stringToSentences(reviews_str)
@@ -114,11 +115,11 @@ def main(argv):
         P8:{<VBN|VBD><RB|RBR|RBS>}
     """
 
-    extracted_neutral = []
     extracted_pos = []
     extracted_neg = []
-    
-    extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
+
+    # extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
+    extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
 
     # Frequency distribution
     freqdist_pos = nltk.FreqDist(word for word in extracted_pos)
