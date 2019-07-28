@@ -1,6 +1,5 @@
 from . import languageUtils
 from . import features
-import insights.features
 from tqdm import tqdm
 import nltk
 import sys

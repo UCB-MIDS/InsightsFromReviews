@@ -17,34 +17,39 @@
   <body>
 
   	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	  <ul class="navbar-nav">
-	    <li class="nav-item active">
-	      <a class="nav-link" href="#">Home</a>
-	    </li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="#">About Us</a>
-	    </li>
-	  </ul>
-	</nav>
+         <ul class="navbar-nav">
+            <li class="nav-item">
+               <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="/about/">About Us</a>
+            </li>
+            <li class="nav-item active">
+               <a class="nav-link" href="/actionableinsight/">Insights</a>
+            </li>
+         </ul>
+      </nav>
 
-  	<div class="jumbotron text-center">
-  		<div class="container">
-  			
-		    <h1 class="text-info">Actionable Insights</h1>
-		    <br>
-			<div class="row justify-content-center">
-				{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-				<form action="{% url 'ai:result' %}" class="form-inline" method="post">
-					
-					{% csrf_token %}
-						<input type="text" class="form-control mb-2 mr-sm-2" name="query_text">
-						<input type="submit" class="btn btn-primary mb-2 mr-sm-2" value="Search">
-
-				</form>
-			</div>
-		</div>
-	</div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  	<div class="container">
+         <div class="row justify-content-center align-items-center">
+            <h1 class="text-info">Actionable Insights&nbsp&nbsp&nbsp</h1>
+         </div>
+         <br>
+         <div class="row justify-content-center align-items-center">
+            <form action="{% url 'ai:result' %}" class="form-inline" method="post">
+               {% csrf_token %}
+               <input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = '{{query_text}}' >
+               <input type="submit" class="btn btn-primary mb-2 mr-sm-2" value="Search">
+            </form>
+         </div>
+      </div>
 
 
 

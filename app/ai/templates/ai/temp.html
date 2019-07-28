@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Pacifico" />
+      <link rel="stylesheet" type="text/css" href="/static/ai/style.css">
+      <title>Actionable Insights</title>
+   </head>
+   <body>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <ul class="navbar-nav">
+            <li class="nav-item active">
+               <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+               <a class="nav-link" href="/about/">About Us</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="/actionableinsight/">Insights</a>
+            </li>
+         </ul>
+      </nav>
+      <br>
+      <div class="container">
+         <div class="row justify-content-center align-items-center">
+            <h1 class="text-info">Actionable Insights&nbsp&nbsp&nbsp</h1>
+            <form action="/result/" class="form-inline" method="post">
+               <input type="hidden" name="csrfmiddlewaretoken" value="Mpl6r4NIgUwM0Nh5KYczQZjCVsZMQItVqqSjkUcuykAal1ZUWTfzqJq6wjKLGml5">
+               <input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = 'chair' >
+               <input type="submit" class="btn btn-primary mb-2 mr-sm-2" value="Search">
+            </form>
+         </div>
+      </div>
+      <div class="row">
+         <!-- Product #1 -->
+         <div class="card col-sm" style="width: 35rem;">
+            <div class="card-body">
+               <div class="card" >
+                  <div class="card-body">
+                     <h5 class="card-title">#1 Product Description</h5>
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th>Property</th>
+                              <th>Value</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>Name</td>
+                              <td>Furmax Office Chair Mid Back Swivel Lumbar Support Desk Chair, Computer Ergonomic Mesh Chair with Armrest (Black)</td>
+                           </tr>
+                           <tr>
+                              <td>Image</td>
+                              <td><img src="https://images-na.ssl-images-amazon.com/images/I/71kHxfeqNaL._SL1500_.jpg" height=200></td>
+                           </tr>
+                           <tr>
+                              <td>ASIN</td>
+                              <td>B07B7K7N3P</td>
+                           </tr>
+                           <tr>
+                              <td>Reviews</td>
+                              <td>
+                                 <img src="/static/ai/review_4.png" height="23" vertical-align="center"> 
+                                 4.1 /  875 Reviews
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>Price</td>
+                              <td>$40.99</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               <div class="card" >
+                  <div class="card-body">
+                     <h5 class="card-title">Inisghts from Reviews</h5>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P0" aria-expanded="false" aria-controls="insight_P0">
+                     comfortable chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P1" aria-expanded="false" aria-controls="insight_P1">
+                     expensive chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P2" aria-expanded="false" aria-controls="insight_P2">
+                     furmax office
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P3" aria-expanded="false" aria-controls="insight_P3">
+                     good chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P4" aria-expanded="false" aria-controls="insight_P4">
+                     great chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P5" aria-expanded="false" aria-controls="insight_P5">
+                     high ended
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P6" aria-expanded="false" aria-controls="insight_P6">
+                     old desk
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P7" aria-expanded="false" aria-controls="insight_P7">
+                     tad bit
+                     </button>
+                     </ul>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N0" aria-expanded="false" aria-controls="insight_N0">
+                     real problem
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N1" aria-expanded="false" aria-controls="insight_N1">
+                     right fit
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N2" aria-expanded="false" aria-controls="insight_N2">
+                     tilt tension
+                     </button>
+                     </p>
+                     <div class="insight-text collapse show" id="insight_P0">
+                        <div class="card card-body " >
+                           &#8208;&nbspSeat has a thick cushion and back is curved just right to make it a very comfortable chair.Ordered this chair after reading so many good reviews.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P1">
+                        <div class="card card-body " >
+                           &#8208;&nbspSeat has a thick cushion and back is curved just right to make it a very comfortable chair.Ordered this chair after reading so many good reviews. <br><br> &#8208;&nbspComfortable chair met my expectations.Very comfortable and attractive.The seat bottom is covered with thick fabric and is comfortable for hours. <br><br> &#8208;&nbsp(Which was why I opted for a less expensive chair)<br />All in all I'm pretty pleased with it so far.The chair is sturdy and strong for its value as compared to any leading brand in the market.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P2">
+                        <div class="card card-body " >
+                           &#8208;&nbsp(Which was why I opted for a less expensive chair)<br />All in all I'm pretty pleased with it so far.The chair is sturdy and strong for its value as compared to any leading brand in the market. <br><br> &#8208;&nbspWhoops!I bought this temporarily until I had the money for a better more expensive chair but ended up keeping it. <br><br> &#8208;&nbspMy husband decided he liked it better, so swapped it out for his much more expensive chair.<br /><br />I assembled it myself in about 20 minutes. <br><br> &#8208;&nbspMy husband decided he liked it better, so swapped it out for his much more expensive chair.<br /><br />I assembled it myself in about 20 minutes. <br><br> &#8208;&nbspBut this chair would be an excellent choice for most office situations.
+                           <div id="video-block-R3BAXT7N9T0VSO" class="a-section a-spacing-small a-spacing-top-mini video-block"></div>
+                           <input type="hidden" name="" value="https://images-na.ssl-images-amazon.com/images/I/E117I2taL4S.mp4" class="video-url"><input type="hidden" name="" value="https://images-na.ssl-images-amazon.com/images/I/11zL7xqwCaS.png" class="video-slate-img-url">&nbsp;<a data-hook="product-link-linked" class="a-link-normal" href="/Furmax-Office-Chair-Mid-Back-Swivel-Lumbar-Support-Desk-Chair-Computer-Ergonomic-Mesh-Chair-with-Armrest-Black/dp/B07B7K7N3P/ref=cm_cr_arp_d_rvw_txt?ie=UTF8">Furmax Office Chair Mid Back Swivel Lumbar Support Desk Chair, Computer Ergonomic Mesh Chair with Armrest (Black)</a><br />«Cuando pasas muchas horas frente a la computadora quieres una silla que te haga sentir cómoda y te alivie el dolor del peso en las caderas.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P3">
+                        <div class="card card-body " >
+                           &#8208;&nbspBut this chair would be an excellent choice for most office situations.
+                           <div id="video-block-R3BAXT7N9T0VSO" class="a-section a-spacing-small a-spacing-top-mini video-block"></div>
+                           <input type="hidden" name="" value="https://images-na.ssl-images-amazon.com/images/I/E117I2taL4S.mp4" class="video-url"><input type="hidden" name="" value="https://images-na.ssl-images-amazon.com/images/I/11zL7xqwCaS.png" class="video-slate-img-url">&nbsp;<a data-hook="product-link-linked" class="a-link-normal" href="/Furmax-Office-Chair-Mid-Back-Swivel-Lumbar-Support-Desk-Chair-Computer-Ergonomic-Mesh-Chair-with-Armrest-Black/dp/B07B7K7N3P/ref=cm_cr_arp_d_rvw_txt?ie=UTF8">Furmax Office Chair Mid Back Swivel Lumbar Support Desk Chair, Computer Ergonomic Mesh Chair with Armrest (Black)</a><br />«Cuando pasas muchas horas frente a la computadora quieres una silla que te haga sentir cómoda y te alivie el dolor del peso en las caderas. <br><br> &#8208;&nbspPuedo decir, después de más de 30 días de uso, que la Furmax Office Chair Mid Back Swivel Lumbar...
+                           Puedo decir, después de más de 30 días de uso, que la Furmax Office Chair Mid Back Swivel Lumbar...
+                           La tela original se impregna en la piel cuando estas muchas horas en contacto directo sobre ella.Chair is very sturdy and was easy to assemble! <br><br> &#8208;&nbspI like this chair overall, just need to get a new back piece.My review for my Furmax office chair is positive one. <br><br> &#8208;&nbspWould buy again for the price.It is a good chair for the price.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P4">
+                        <div class="card card-body " >
+                           &#8208;&nbspThe directions are slightly confusing, but I am stubborn with reading directions.<br /><br />I liked this chair so much I purchased another one to put in my classroom.goodGood chair just weird lean on itQuick delivery and easy to assembleIt was very easy to assemble. <br><br> &#8208;&nbspI was considering buying another one, it is a good chair for this price.This is a good chair for being so cheap. <br><br> &#8208;&nbspBut, if your just the occasional home office type person this is perfect!Surprisingly good chair for the price. <br><br> &#8208;&nbspI think it’s a good chair overall. <br><br> &#8208;&nbspGreat chair for the price.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P5">
+                        <div class="card card-body " >
+                           &#8208;&nbspPersonally I would advise people to look for the seat size since it proved a tad bit small for me but the customer support by the seller is amazing and smooth with their redressal policy.Great chair for the price. <br><br> &#8208;&nbspIt’s a good value for the type of chair, but if you need true support or are sitting many hours a day, spend more money to get an executive chair.Great chair for the price! <br><br> &#8208;&nbspIt’s a good value for the type of chair, but if you need true support or are sitting many hours a day, spend more money to get an executive chair.Great chair for the price! <br><br> &#8208;&nbspBut over all it meets my needsGreat chair for the price.Purchased for office purposes, this is a fairly priced, easy to assemble and very comfortable desk chair. <br><br> &#8208;&nbspBut over all it meets my needsGreat chair for the price.Purchased for office purposes, this is a fairly priced, easy to assemble and very comfortable desk chair. <br><br> &#8208;&nbspPersonally I would advise people to look for the seat size since it proved a tad bit small for me but the customer support by the seller is amazing and smooth with their redressal policy.Good for this priceworks wellIt's a great chair for the price. <br><br> &#8208;&nbspThe arm rests aren’t the best but not terrible<br /><br />Overall a great chair for a college student or anyone needing one for the officeSuper super easy to assemble, the arm positions was a little tricky but it took maybe 20 mins. <br><br> &#8208;&nbspThe casters work great on hard floors.If you set your expectations properly, this is a great chair for the price.Pretty easy to assemble and comfy for the priceI want to buy this office chair for a long time, with my computer desk, it is perfect. <br><br> &#8208;&nbspIt is the best of all my home desk chairs, and can even compete with the best of the high end office chairs at my job.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P6">
+                        <div class="card card-body " >
+                           &#8208;&nbspIt is the best of all my home desk chairs, and can even compete with the best of the high end office chairs at my job. <br><br> &#8208;&nbspProvided it doesn’t fall apart on me I’m not too worried, but it’s there.My old desk chair was falling apart and I didn't want to spend the $400 at an office store to replace it, so I tried this chair.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P7">
+                        <div class="card card-body " >
+                           &#8208;&nbspI drive a school bus about 100+ miles a day So my back gets a beating the seat is air ride which helps so much  then when I get home and check my on line businesst my old desk chair was not sitting straight leaned to one side could not adjust it was a mess and my back paid for it. <br><br> &#8208;&nbspI drive a school bus about 100+ miles a day So my back gets a beating the seat is air ride which helps so much  then when I get home and check my on line businesst my old desk chair was not sitting straight leaned to one side could not adjust it was a mess and my back paid for it. <br><br> &#8208;&nbspPersonally I would advise people to look for the seat size since it proved a tad bit small for me but the customer support by the seller is amazing and smooth with their redressal policy.Great chair for the price.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N0">
+                        <div class="card card-body " >
+                           &#8208;&nbspMy real problem with this chair is the arm rests.<br /><br />As stated in a few reviews, the armrests push against your thighs when sitting.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N1">
+                        <div class="card card-body " >
+                           &#8208;&nbspMy real problem with this chair is the arm rests.<br /><br />As stated in a few reviews, the armrests push against your thighs when sitting. <br><br> &#8208;&nbspSeat is a bit tight, so if you are bigger bodied it might not be the right fit as the arms are not adjustable.<br /><br />Edit - on 11/26/2018 this chair exploded on me today while sitting in it.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N2">
+                        <div class="card card-body " >
+                           &#8208;&nbspSeat is a bit tight, so if you are bigger bodied it might not be the right fit as the arms are not adjustable.<br /><br />Edit - on 11/26/2018 this chair exploded on me today while sitting in it. <br><br> &#8208;&nbspWhile one user suggested that the armrests were "optional," the tilt tension simply could not be maintained without them, so the chair became a recliner.
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               Analysis updated on 20190715
+            </div>
+         </div>
+         <!-- Product #2 -->
+         <div class="card col-sm" style="width: 35rem;">
+            <div class="card-body">
+               <div class="card" >
+                  <div class="card-body">
+                     <h5 class="card-title">#2 Product Description</h5>
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th>Property</th>
+                              <th>Value</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>Name</td>
+                              <td>
+                                 AmazonBasics Mid-Back Desk Office Chair with Armrests - Mesh Back, Swivels - Black
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>Image</td>
+                              <td><img src="https://images-na.ssl-images-amazon.com/images/I/91ulA958MKL._SL1500_.jpg" height=200></td>
+                           </tr>
+                           <tr>
+                              <td>ASIN</td>
+                              <td>B00IIFW2L4</td>
+                           </tr>
+                           <tr>
+                              <td>Reviews</td>
+                              <td>
+                                 <img src="/static/ai/review_4.png" height="23" vertical-align="center"> 
+                                 4.1 /  3540 Reviews
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>Price</td>
+                              <td>$64.99</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               <div class="card" >
+                  <div class="card-body">
+                     <h5 class="card-title">Inisghts from Reviews</h5>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P0_2" aria-expanded="false" aria-controls="insight_P0_2">
+                     backing
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P1_2" aria-expanded="false" aria-controls="insight_P1_2">
+                     comfortable chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P2_2" aria-expanded="false" aria-controls="insight_P2_2">
+                     compact dimension
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P3_2" aria-expanded="false" aria-controls="insight_P3_2">
+                     expensive chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P4_2" aria-expanded="false" aria-controls="insight_P4_2">
+                     fixed arm
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P5_2" aria-expanded="false" aria-controls="insight_P5_2">
+                     great chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P6_2" aria-expanded="false" aria-controls="insight_P6_2">
+                     inexpensive chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P7_2" aria-expanded="false" aria-controls="insight_P7_2">
+                     many reviewer
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P8_2" aria-expanded="false" aria-controls="insight_P8_2">
+                     reasonably comfortable
+                     </button>
+                     </ul>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N0_2" aria-expanded="false" aria-controls="insight_N0_2">
+                     good chair
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N1_2" aria-expanded="false" aria-controls="insight_N1_2">
+                     used
+                     </button>
+                     </p>
+                     <div class="insight-text collapse show" id="insight_P0_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspI've spent entire days in this chair working and so far not one backache.Overall I like this chair, especially for the price.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P1_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspI've spent entire days in this chair working and so far not one backache.Overall I like this chair, especially for the price. <br><br> &#8208;&nbspI would've paid more if the arm height was adjustable, or if at a minimum were able to be lifted out of the way against the back of the chair making the chair essentially armless. <br><br> &#8208;&nbspI would've paid more if the arm height was adjustable, or if at a minimum were able to be lifted out of the way against the back of the chair making the chair essentially armless. <br><br> &#8208;&nbspI find the fixed arms to be about an inch too low, but if I am just sitting back, relaxing in the chair, my wrists rest on the armrest and it's better than nothing.<br /><br />The height of the chair was very important to me. <br><br> &#8208;&nbspI find the fixed arms to be about an inch too low, but if I am just sitting back, relaxing in the chair, my wrists rest on the armrest and it's better than nothing.<br /><br />The height of the chair was very important to me. <br><br> &#8208;&nbsp/><br />Fixed arm height is about 6.25&quot; from top of seat to top of arm.<br /><br />Note many reviewers complained that during assembly of the back rest to the seat cushion, the metal back bar frame overlapped the seat plate. <br><br> &#8208;&nbsp/><br />Fixed arm height is about 6.25&quot; from top of seat to top of arm.<br /><br />Note many reviewers complained that during assembly of the back rest to the seat cushion, the metal back bar frame overlapped the seat plate. <br><br> &#8208;&nbspThey must have updated the assembly instructions at some point because the instructions clearly state, &quot;the metal back bar frame will overlap on the seat plate.&quot;  They then show a diagram showing the overlap with another note,&quot;back bar will overlap seat plate when aligning to holes.&quot;  So, this is not a design flaw but intentional.<br /><br />Overall, I am very happy with the chair. <br><br> &#8208;&nbspThey must have updated the assembly instructions at some point because the instructions clearly state, &quot;the metal back bar frame will overlap on the seat plate.&quot;  They then show a diagram showing the overlap with another note,&quot;back bar will overlap seat plate when aligning to holes.&quot;  So, this is not a design flaw but intentional.<br /><br />Overall, I am very happy with the chair. <br><br> &#8208;&nbspBut it feels to me like a nice comfortable chair of average / compact dimensions that you might find in almost any office.<br /><br />One tip about the arms being too close together...
+                           But it feels to me like a nice comfortable chair of average / compact dimensions that you might find in almost any office.<br /><br />One tip about the arms being too close together...
+                           So you can choose whether to snug the arms against the edges of the seat or allow a little extra width.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P2_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspModerately comfortable chair if you'll use it lightly. <br><br> &#8208;&nbspIt seems to be due to the two piece construction of the backrest which translates uneven pressure into a twisting motion, putting strain on the center plastic piece holding the two parts together.<br /><br />For the money, this is a fairly comfortable chair. <br><br> &#8208;&nbspBut it feels to me like a nice comfortable chair of average / compact dimensions that you might find in almost any office.<br /><br />One tip about the arms being too close together...
+                           But it feels to me like a nice comfortable chair of average / compact dimensions that you might find in almost any office.<br /><br />One tip about the arms being too close together...
+                           So you can choose whether to snug the arms against the edges of the seat or allow a little extra width.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P3_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspSo I went from a very expensive chair to a very inexpensive chair.<br /><br />Pros: Overall a pretty solid chair with reasonable comfort.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P4_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspSo I went from a very expensive chair to a very inexpensive chair.<br /><br />Pros: Overall a pretty solid chair with reasonable comfort. <br><br> &#8208;&nbspHe said it was easy to assemble and is very comfortable.Easy to setup, came with instructions.Simple inexpensive chair that is comfortable and low profile. <br><br> &#8208;&nbspVery quick and easy to assemble  Very pleased overall.For an inexpensive chair, this works pretty well for home office. <br><br> &#8208;&nbspI'm no stranger to having to assemble furniture, but I think these instructions and the way everything was packed (all nuts, bolts, etc were in their own labeled ziplock) definitely wins in the ease of use department!<br /><br />I've been using it for about an hour now and it's everything I wanted in an inexpensive chair. <br><br> &#8208;&nbspIn my opinion they should just offer a slightly more expensive chair and add adjustable arms. <br><br> &#8208;&nbspVery pleased with the chair!For an inexpensive chair, this works pretty well for home office. <br><br> &#8208;&nbspI was looking for an inexpensive chair that I could put together with little effort and use for a few hours at a time. <br><br> &#8208;&nbspMy children love it, too.<br /><br />Overall, I think this is a good inexpensive chair for just about anyone. <br><br> &#8208;&nbspI find the fixed arms to be about an inch too low, but if I am just sitting back, relaxing in the chair, my wrists rest on the armrest and it's better than nothing.<br /><br />The height of the chair was very important to me.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P5_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspI find the fixed arms to be about an inch too low, but if I am just sitting back, relaxing in the chair, my wrists rest on the armrest and it's better than nothing.<br /><br />The height of the chair was very important to me. <br><br> &#8208;&nbsp/><br />Fixed arm height is about 6.25&quot; from top of seat to top of arm.<br /><br />Note many reviewers complained that during assembly of the back rest to the seat cushion, the metal back bar frame overlapped the seat plate. <br><br> &#8208;&nbsp/><br />Fixed arm height is about 6.25&quot; from top of seat to top of arm.<br /><br />Note many reviewers complained that during assembly of the back rest to the seat cushion, the metal back bar frame overlapped the seat plate. <br><br> &#8208;&nbspThe casters work great on hard floors.<br /><br />The only bummer is the fixed arms. <br><br> &#8208;&nbspFixed arm rests are a bit low, but sturdy and attractively sloped. <br><br> &#8208;&nbspPleased with the quality in relation to the price.Ended up buying two of these chairs because they are very comfy and priced good.Great chair!
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P6_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspI'm going buy an addditional cushion to help with this.Great chair for my officeI will make this a proper review after I have had the chair for a while, but I am pleased with what I got for now. <br><br> &#8208;&nbspThe cheaper "leather" chairs tear up sooner and you'll have little bits of very thin imitation leather all over your floor.Great chair. <br><br> &#8208;&nbspI'm 5'7&#34; and there's about an inch of space between my elbow and the arm rest.<br /><br />If anything happens in the coming days/weeks/months, I'll come back and update this review, but for now, I'm super happy!If you set your expectations properly, this is a great chair for the price. <br><br> &#8208;&nbspAll in all, a great chair!Assembling furniture is difficult for me. <br><br> &#8208;&nbspSo I went from a very expensive chair to a very inexpensive chair.<br /><br />Pros: Overall a pretty solid chair with reasonable comfort.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P7_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspSo I went from a very expensive chair to a very inexpensive chair.<br /><br />Pros: Overall a pretty solid chair with reasonable comfort. <br><br> &#8208;&nbspHe said it was easy to assemble and is very comfortable.Easy to setup, came with instructions.Simple inexpensive chair that is comfortable and low profile. <br><br> &#8208;&nbspVery quick and easy to assemble  Very pleased overall.For an inexpensive chair, this works pretty well for home office. <br><br> &#8208;&nbspI'm no stranger to having to assemble furniture, but I think these instructions and the way everything was packed (all nuts, bolts, etc were in their own labeled ziplock) definitely wins in the ease of use department!<br /><br />I've been using it for about an hour now and it's everything I wanted in an inexpensive chair. <br><br> &#8208;&nbspVery pleased with the chair!For an inexpensive chair, this works pretty well for home office. <br><br> &#8208;&nbspI was looking for an inexpensive chair that I could put together with little effort and use for a few hours at a time. <br><br> &#8208;&nbspMy children love it, too.<br /><br />Overall, I think this is a good inexpensive chair for just about anyone. <br><br> &#8208;&nbsp/><br />Fixed arm height is about 6.25&quot; from top of seat to top of arm.<br /><br />Note many reviewers complained that during assembly of the back rest to the seat cushion, the metal back bar frame overlapped the seat plate.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P8_2">
+                        <div class="card card-body " >
+                           &#8208;&nbsp/><br />Fixed arm height is about 6.25&quot; from top of seat to top of arm.<br /><br />Note many reviewers complained that during assembly of the back rest to the seat cushion, the metal back bar frame overlapped the seat plate. <br><br> &#8208;&nbspGlad I bought two of them.There are many reviews stating there are alignment problems with the seat back plate overlapping the seat base plate yet no one really mentions that the armrest attachment is just as strange if not stranger (armrest is cocked at an angle over a riser block on outer edge of seat base, likely to gain more clearance for larger passengers).<br /><br />It's a cheap chair and the design is admittedly somewhat stupid -- or maybe just made from various spare parts.<br /><br />Currently the chair is locked up under Amazon review due to complaints and I wonder if this is a design change or whether it has been this way since day one.<br /><br />Regarding the chair...
+                           If you are that guy (or girl) in the office that can not find the right chair this won't be the chair for you. <br><br> &#8208;&nbspI thought assembly would be tricky, but it only took about 15 minutes.<br />The chair is very solid and reasonably comfortable.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N0_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspI made a serious mistake by not noticing in the product description that the arm rests were not adjustable as a good chair would have.<br
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N1_2">
+                        <div class="card card-body " >
+                           &#8208;&nbspI only bought this chair because it was from AmazonBasics and of course because it was cheaper than other options.
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               Analysis updated on 20190727
+            </div>
+         </div>
+         <!-- Product #3 -->
+         <div class="card col-sm" style="width: 35rem;">
+            <div class="card-body">
+               <div class="card" >
+                  <div class="card-body">
+                     <h5 class="card-title">#3 Product Description</h5>
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th>Property</th>
+                              <th>Value</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>Name</td>
+                              <td>
+                                 Homall Gaming Chair Office Chair High Back Computer Chair PU Leather Desk Chair PC Racing Executive Ergonomic Adjustable Swivel Task Chair with Headrest and Lumbar Support (White)
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>Image</td>
+                              <td><img src="https://images-na.ssl-images-amazon.com/images/I/61vnWAhxngL._SL1500_.jpg" height=200></td>
+                           </tr>
+                           <tr>
+                              <td>ASIN</td>
+                              <td>B01MRZ02TL</td>
+                           </tr>
+                           <tr>
+                              <td>Reviews</td>
+                              <td>
+                                 <img src="/static/ai/review_4.png" height="23" vertical-align="center"> 
+                                 4.0 /  3328 Reviews
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>Price</td>
+                              <td>$93.88</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               <div class="card" >
+                  <div class="card-body">
+                     <h5 class="card-title">Inisghts from Reviews</h5>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P0_3" aria-expanded="false" aria-controls="insight_P0_3">
+                     definitely
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P1_3" aria-expanded="false" aria-controls="insight_P1_3">
+                     fairly comfortable
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P2_3" aria-expanded="false" aria-controls="insight_P2_3">
+                     good quality
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P3_3" aria-expanded="false" aria-controls="insight_P3_3">
+                     great chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P4_3" aria-expanded="false" aria-controls="insight_P4_3">
+                     left arm
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P5_3" aria-expanded="false" aria-controls="insight_P5_3">
+                     little
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P6_3" aria-expanded="false" aria-controls="insight_P6_3">
+                     new chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P7_3" aria-expanded="false" aria-controls="insight_P7_3">
+                     old chair
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P8_3" aria-expanded="false" aria-controls="insight_P8_3">
+                     partially blocked
+                     </button>
+                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#insight_P9_3" aria-expanded="false" aria-controls="insight_P9_3">
+                     second chair
+                     </button>
+                     </ul>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N0_3" aria-expanded="false" aria-controls="insight_N0_3">
+                     completely
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N1_3" aria-expanded="false" aria-controls="insight_N1_3">
+                     first chair
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N2_3" aria-expanded="false" aria-controls="insight_N2_3">
+                     good chair
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N3_3" aria-expanded="false" aria-controls="insight_N3_3">
+                     great chair
+                     </button>
+                     <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#insight_N4_3" aria-expanded="false" aria-controls="insight_N4_3">
+                     lumbar support
+                     </button>
+                     </p>
+                     <div class="insight-text collapse show" id="insight_P0_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspIt definitely needs a break-in period before it starts to &#34;feel&#34; like an office chair, but once it gets to that point the chair is fairly comfortable for long periods of time.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P1_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspIt definitely needs a break-in period before it starts to &#34;feel&#34; like an office chair, but once it gets to that point the chair is fairly comfortable for long periods of time. <br><br> &#8208;&nbspIt's price is a major selling point and if you're looking for a &#34;gaming&#34; chair or just need something with a tall back like I do, this is definitely worth it.Absolutely great pc gaming chair. <br><br> &#8208;&nbspIt's price is a major selling point and if you're looking for a &#34;gaming&#34; chair or just need something with a tall back like I do, this is definitely worth it.Absolutely great pc gaming chair. <br><br> &#8208;&nbspMine arrived with a minor, but permanent stain on the upper back part, but nothing I can't deal with.<br /><br />Though this is my first high-end chair and I have no higher-end product to compare it to, this is definitely worth the price based on my experience with it. <br><br> &#8208;&nbspMine arrived with a minor, but permanent stain on the upper back part, but nothing I can't deal with.<br /><br />Though this is my first high-end chair and I have no higher-end product to compare it to, this is definitely worth the price based on my experience with it. <br><br> &#8208;&nbspand easy quick to put together.Great!Chair would be loads better if the back would pivot separate from the base, it's comfy enough for a few hours but definitely not an all day chairNot a bad chair at all. <br><br> &#8208;&nbspDefinitely snug and gripping like a sports car seat.<br /><br />And if there's an upgrade to swap out the arms for ones that fold up, I'll consider it. <br><br> &#8208;&nbspThere's definitely not enough cushion on the seat itself for long periods of sitting on this chair so I'd probably recommend you at least have an added cushion to it for some excess padding. <br><br> &#8208;&nbspIf they were going to do something like that, they definitely should of added more screws to tie into the base of the chair which would definitely help prevent this problem. <br><br> &#8208;&nbspIt definitely needs a break-in period before it starts to &#34;feel&#34; like an office chair, but once it gets to that point the chair is fairly comfortable for long periods of time.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P2_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspIt definitely needs a break-in period before it starts to &#34;feel&#34; like an office chair, but once it gets to that point the chair is fairly comfortable for long periods of time. <br><br> &#8208;&nbspI herd everyone saying good quality for the money but to me it was alot of money for a chair to play video games.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P3_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspI herd everyone saying good quality for the money but to me it was alot of money for a chair to play video games. <br><br> &#8208;&nbspGood quality!Comfortable and sturdyWhen I was first looking at this chair I saw complaints about it being too small for &#34;bigger guys&#34;. <br><br> &#8208;&nbspGood quality!Comfortable and sturdyWhen I was first looking at this chair I saw complaints about it being too small for &#34;bigger guys&#34;. <br><br> &#8208;&nbspSeems to be good quality and he sits in it for a very long time with no pain! <br><br> &#8208;&nbspThere are other parts of the chair that aren't adjustable, such as how far forward the backrest is, but this is the one that stands out most.<br /><br />Overall, this is a good chair, but not a great chair.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P4_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspThere are other parts of the chair that aren't adjustable, such as how far forward the backrest is, but this is the one that stands out most.<br /><br />Overall, this is a good chair, but not a great chair. <br><br> &#8208;&nbspMy son is 6'4- 185 lbs and he says it's ok for him.<br />Update...Customer service was excellent, in regards to sending out some replacement parts.A great chair for gaming or general work at a desk for the price. <br><br> &#8208;&nbspMy son is 6'4- 185 lbs and he says it's ok for him.<br />Update...Customer service was excellent, in regards to sending out some replacement parts.A great chair for gaming or general work at a desk for the price. <br><br> &#8208;&nbspEven my dad thinks it's a great chair and is kinda mad he overpaid for essentially the same product. <br><br> &#8208;&nbspNo noticable wear other than the sinkingGreat chair for the price. <br><br> &#8208;&nbspAssembling was a little tricky but other than that the product was great, been having it for a month now and nothing ‘bad’ has happened.Great chair and quality my son loves itdecent chair very little paddingalright so I've had these chairs for a few weeks now (the white one and the blue one) so I feel ready to leave my opinion. <br><br> &#8208;&nbsp!Great product came quicklyGreat chairMy son loved. <br><br> &#8208;&nbspThis was definitely a great buy.Great chair just got it today and it’s amazing the only thing that I don’t like is the shells for the chair on the side were so hard to get in there was no Hole but I was using it and one of the buckles broke but it goodWas looking for an affordable chair for my desk and decided upon this one. <br><br> &#8208;&nbspCan't complain at all about the customer service!This has been a great chair. <br><br> &#8208;&nbspThe lever to lower and raise the chair is partially blocked by the left arm rest, but is still usable.<br /><br />The lumbar support and head rest are a great addition, though I find myself removing the lumbar support and just keeping the head rest.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P5_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspThe lever to lower and raise the chair is partially blocked by the left arm rest, but is still usable.<br /><br />The lumbar support and head rest are a great addition, though I find myself removing the lumbar support and just keeping the head rest. <br><br> &#8208;&nbspHowever I assembled it in December and the left arm rest is already broken.<br />I weigh 215lbs and it is rated much higher than that. <br><br> &#8208;&nbspOverall good buy for a good chair.<br />Pros:<br />-Comfortable<br />-Very sturdy and reliable for hardcore gaming sessions<br />-Comfortable pillows<br />-Easy assembling instructions<br /><br />Cons:<br />-Needs more adjustments for the arm section<br />-Product out of the box came with two tears already<br />-Left arm rest is already wobbling (tightened it multiple times already)UPDATE:  Was 4 stats but now 3.<br /><br />About a month into it, and I don't like this chair. <br><br> &#8208;&nbspFor the price I'm not really complaining but I only got this chair a few days ago and already the left armrest is already wobbly with no screws I can tighten to solve the issue sadly and I'm very light weighing only 120 pounds and I'm not reckless at all with my furniture so I don't really know what happened.<br /><br />But overall I'm happy with my purchase and won't be returning it cause I do believe I got what I paid for and it's comfortable enough with a pillow to sit on and reclining although I do wish a pillow wasn't needed to keep this chair from killing you from sitting on it for even short periods of time as it'd look better without one.For the price i'm surprised, compared to the competitors. <br><br> &#8208;&nbsp!It doesn't take a math magician to put together this chair but you do got a kind of pay attention to what you're doing but it's really easy to set up a little pricey but my son love it matches his desk and LEDs in his room.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P6_3">
+                        <div class="card card-body " >
+                           &#8208;&nbsp!It doesn't take a math magician to put together this chair but you do got a kind of pay attention to what you're doing but it's really easy to set up a little pricey but my son love it matches his desk and LEDs in his room. <br><br> &#8208;&nbspThe included lumbar and head cushion are a great inclusion but are a little stiff for my taste. <br><br> &#8208;&nbspThe included lumbar and head cushion are a great inclusion but are a little stiff for my taste. <br><br> &#8208;&nbspThe chair feels a little stiffer than other racing chairs, but the shape and seat feel pretty much the same.<br /><br />Cons:<br />- Top heavy. <br><br> &#8208;&nbspThe chair feels a little stiffer than other racing chairs, but the shape and seat feel pretty much the same.<br /><br />Cons:<br />- Top heavy. <br><br> &#8208;&nbspThe arm rests are alright and are a little squeaky, but do not need to be attached. <br><br> &#8208;&nbspThe arm rests are alright and are a little squeaky, but do not need to be attached. <br><br> &#8208;&nbspA little bit of wear on it but I sit in this 40 to 50 hours a week. <br><br> &#8208;&nbspPutting this chair together can be a little bit of a challenge.Updated post (about a month later): the hidrolic part that keeps the chair up is crap. <br><br> &#8208;&nbspThe chair is very comfortable, despite some other bad reviews.<br /><br />Im 6 ft 2 inches and 180 lbs, and so far I love this new chair.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P7_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspThe chair is very comfortable, despite some other bad reviews.<br /><br />Im 6 ft 2 inches and 180 lbs, and so far I love this new chair. <br><br> &#8208;&nbspThey sent the new chair immediately and within a couple days it was here. <br><br> &#8208;&nbspIt is a great bang for your buck and a non-expensive way to improve any PC gaming experience.Bought this gaming chair for replacing my old chair in my office.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P8_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspIt is a great bang for your buck and a non-expensive way to improve any PC gaming experience.Bought this gaming chair for replacing my old chair in my office. <br><br> &#8208;&nbspWith my old chair, it was too big and I had to use a giant king-sized pillow to keep my back straight.<br />- Looks much cooler than normal office chairs.<br />- Great price. <br><br> &#8208;&nbspAnd you can't beat the cost of this chair either.Pretty good chairVery easy to assemble, great comfort and affordable.pretty easy to makeVery beautifulPerfect for the money more padding would be greatI've never owned a "racing" style computer chair before, so I decided to see what all the fuss was about when my old chair started falling apart. <br><br> &#8208;&nbspMy old chair was made of a cheap "pleather" material, so this was a welcome change as well.<br /><br />Overall:<br />I'm definitely satisfied with this chair at the price I paid for it (just under $100). <br><br> &#8208;&nbspIt took a bit of adjusting at first, but I'm really enjoying this chair now.<br /><br />With my old chair, I developed a habit of sitting on one leg on occasion. <br><br> &#8208;&nbspNeedless to say I'm not happy with this chair.So on the positive side of things I got the chair fast, it was easy enough to assemble although sadly there aren't many high-quality videos on how to do so, but after it was all made and done the chair isn't extremely comfortable nor did I expect it to be for the price but sitting on it was surprisingly even less comfortable then sitting on my old chair which was just your standard fold-up chair. <br><br> &#8208;&nbspThe lever to lower and raise the chair is partially blocked by the left arm rest, but is still usable.<br /><br />The lumbar support and head rest are a great addition, though I find myself removing the lumbar support and just keeping the head rest.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_P9_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspThe lever to lower and raise the chair is partially blocked by the left arm rest, but is still usable.<br /><br />The lumbar support and head rest are a great addition, though I find myself removing the lumbar support and just keeping the head rest. <br><br> &#8208;&nbspI've tightened the bolts a few times just to keep it solid, but I keep the included tool in the lumbar pillow so it's easy.<br /><br />And it can do this!<br /><br />UPDATE:<br />My second chair arrived, and putting it together, one of the screws mounting the back rest on the seat completely froze up and began to strip.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N0_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspAfter about 10 months the bottom cushion began to give at the seam and pieces of black material were peeling off all over the bottom afterwards.<br /><br />I contacted the company as the chair was falling completely apart in under 1 year.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N1_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspI should mention that I am 6’3 and 250LBS.<br />Customer service was helpful and sent out a new set of wheels however the mounting holes for the wheels bent now and the replacement wheels are now wobbly so there is a tilt.<br />Living with this imperfection the chair slowly started to deteriorate and started to tilt to the left.<br />It’s completely uncomfortable for anyone of a larger size.Updating again:  I wish I could give this chair a good review, but I cannot. <br><br> &#8208;&nbspThe joints where the arm rests were mounted broke completely at the weld joints. <br><br> &#8208;&nbspI have only owned this chair for five months and it is completely falling apart. <br><br> &#8208;&nbspTheir customer service is fantastic though!<br /><br />The first chair that I bought broke within a month (the mechanism for lifting and lowering the seat).
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N2_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspi still am using my first chair but after a few months the bottom of the chair broke off the wheel and i needed a replacement. <br><br> &#8208;&nbspi still am using my first chair but after a few months the bottom of the chair broke off the wheel and i needed a replacement. <br><br> &#8208;&nbspAt least they are less constraining than the seat's curves themselves....hell, I didn't even notice them during use, except when I tried to get up and they caught on my pants leg.<br /><br />End conclusion: As a chair, it utterly fails to impress....
+                           If you want a good chair, I'd recommend going to....I dunno, I think Staples has displays of chairs that you can actually test out before buying them.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N3_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspNo extrenuous force was applied, this was normal wear and tear.Got this last December as a birthday present, it was a great chair for a while, quite comfortable really.
+                        </div>
+                     </div>
+                     <div class="insight-text collapse" id="insight_N4_3">
+                        <div class="card card-body " >
+                           &#8208;&nbspI do not feel like I am sinking into a chair and I appreciate that in a desk chair.<br />(2) This chair DOES recline and feels stable.<br />(3) Solid wheelbase for someone my height and weight<br />(4) Lumbar support pillow is actually where I need it to be which has helped with improving my posture, relieve muscular fatigue and pain.<br /><br />Cons:<br />(1) The Lift & Lower Mechanism breaks easily, even when almost never used.
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               Analysis updated on 20190727
+            </div>
+         </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="container">
+         <div class="alert alert-info text-center">
+            <!-- Button trigger modal -->
+            <strong>For Update</strong> Click on update to run our models on the latest reviews.
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            Analyze!
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Run Analysis</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <div class="modal-body">
+                        You can request to run our model on the latest reviews of these products. It will take up to 10 minutes to finalize our analysis so plesae comeback after you run our analysis.
+                        <br>
+                        You can continue use the product while we run our analysis.
+                     </div>
+                     <div class="modal-footer">
+                        <form class="form-inline" action="/update/" method="post">
+                           <input type="hidden" name="csrfmiddlewaretoken" value="Mpl6r4NIgUwM0Nh5KYczQZjCVsZMQItVqqSjkUcuykAal1ZUWTfzqJq6wjKLGml5">
+                           <input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = 'chair' >
+                           <input type="submit" class="btn btn-primary bg-info border-info" value="Update">
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <footer class="footer bg-dark" style="height: 3rem;vertical-align:bottom;">
+         <div class="container bg-dark" style="vertical-align:bottom;">
+            <span class="text-muted bg-dark" style="vertical-align:bottom;">Data Science W210 Capstone</span>
+         </div>
+      </footer>
+      <!-- Optional JavaScript 
+         jQuery first, then Popper.js, then Bootstrap JS 
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+         -->
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <!-- Popper JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <!-- Latest compiled JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+         $(document).click(function(e) {
+         	if (!$(e.target).is('.insight-text')) {
+             	$('.collapse').collapse('hide');	    
+             }
+         });
+      </script>
+   </body>
+</html>

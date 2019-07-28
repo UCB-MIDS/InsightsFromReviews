@@ -10,193 +10,417 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Pacifico" />
     
     {% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'ai/style.css' %}">
+   <link rel="stylesheet" type="text/css" href="{% static 'ai/style.css' %}">
 
     <title>Actionable Insights</title>
   </head>
   <body>
 
-  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	  <ul class="navbar-nav">
-	    <li class="nav-item active">
-	      <a class="nav-link" href="#">Home</a>
-	    </li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="#">About Us</a>
-	    </li>
-	  </ul>
-	</nav>
+   <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+         <ul class="navbar-nav">
+            <li class="nav-item">
+               <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="/about/">About Us</a>
+            </li>
+            <li class="nav-item active">
+               <a class="nav-link" href="/actionableinsight/">Insights</a>
+            </li>
+         </ul>
+      </nav>
 
-  	<div class="jumbotron text-center">
-  		<div class="container">
-  			
-		    <h1 class="text-info">Actionable Insights</h1>
-		    <br>
-			<div class="row justify-content-center">
-				{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-				<form action="{% url 'ai:result' %}" class="form-inline" method="post">
-					
-					{% csrf_token %}
-						<input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = '{{query_text}}' >
-						<input type="submit" class="btn btn-primary mb-2 mr-sm-2" value="Search">
-
-				</form>
-			</div>
-		</div>
-	</div>
-
-	<div class="container">
-
-		<table class="table table-striped">
-		    <thead>
-		      <tr>
-		        <th>Property</th>
-		        <th>Value</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		      <tr>
-		        <td>ASIN</td>
-		        <td>{{asin}}</td>
-		      </tr>
-		      <tr>
-		        <td>Updated on </td>
-		        <td>{{update_date}}</td>
-		      </tr>
-		      <tr>
-		        <td>Product Name</td>
-		        <td>{{product_name}}</td>
-		      </tr>	
-		      <tr>
-		        <td>Product Image</td>
-		        <td><img src="{{product_image_url}}" height=200></td>
-		      </tr>	
-		      <tr>
-		        <td>Product Rating</td>
-		        <td>{{product_rating}}</td>
-		      </tr>	
-		      <tr>
-		        <td>Review Count</td>
-		        <td>{{product_review_cnt}}</td>
-		      </tr>
-		      <tr>
-		        <td>Product Price</td>
-		        <td>{{product_price}}</td>
-		      </tr>	
-		    </tbody>
-		  </table>
-	</div>
-
-
-	<div class="container">
-	<p>
-
-	{% if insight_positive_list %}
-	    {% for insight in insight_positive_list %}
-	        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
-	    		{{ insight.1 }}
-	  		</button>
-	    {% endfor %}
-	    </ul>
-	{% else %}
-	    <p>No Positive Insights.</p>
-	{% endif %}
-
-	{% if insight_negative_list %}
-	    {% for insight in insight_negative_list %}
-			<button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
-				{{ insight.1 }}
-			</button>
-	    {% endfor %}
-	{% else %}
-	    <p>No Negative Insights.</p>
-	{% endif %}
-
-	</p>
-
-	{% if insight_positive_list %}
-	    {% for insight in insight_positive_list %}
-	    	{% if forloop.first %}
-		        <div class="insight-text collapse show" id="{{ insight.0 }}">
-				  <div class="card card-body " >
-				    {{ insight.2|safe }}
-				  </div>
-				</div>
-			{% else %}
-				<div class="insight-text collapse" id="{{ insight.0 }}">
-				  <div class="card card-body " >
-				    {{ insight.2|safe }}
-				  </div>
-				</div>
-			{% endif %}
-	    {% endfor %}
-	{% else %}
-
-	{% endif %}
-
-	{% if insight_negative_list %}
-	    {% for insight in insight_negative_list %}
-			<div class="insight-text collapse" id="{{ insight.0 }}">
-			  <div class="card card-body " >
-			    {{ insight.2|safe }}
-			  </div>
-			</div>
-	    {% endfor %}
-	{% else %}
-
-	{% endif %}
-
-	</div>
-<br>
-<br>
-<br>
-	<div class="container">
-
-		<div class="alert alert-info text-center">
-			<form action="{% url 'ai:update' %}" method="post">
-				{% csrf_token %}
-				<strong>For Update</strong> Click on update to run our models on the latest reviews.
-				<input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = '{{query_text}}' >
-				<input type="submit" class="btn btn-primary bg-info border-info" value="Update">
-			</form>
-		</div>
-	</div>
-<br>
-<br>
-<br>
-
-
-	<footer class="footer bg-dark">
-      <div class="container bg-dark">
-        <span class="text-muted bg-dark">Data Science W210 Capstone</span>
+      <br>
+      <div class="container">
+         <div class="row justify-content-center align-items-center">
+            <h1 class="text-info">Actionable Insights&nbsp&nbsp&nbsp</h1>
+            <form action="{% url 'ai:result' %}" class="form-inline" method="post">
+               {% csrf_token %}
+               <input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = '{{query_text}}' >
+               <input type="submit" class="btn btn-primary mb-2 mr-sm-2" value="Search">
+            </form>
+         </div>
       </div>
-    </footer>
 
-    <!-- Optional JavaScript 
-    jQuery first, then Popper.js, then Bootstrap JS 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	-->
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+   <div class="row">
+	<!-- Product #1 -->
+      <div class="card col-sm">
+         <div class="card-body">
+            <div class="card" >
+               <div class="card-body">
+                  <h5 class="card-title">#1 Product Description</h5>
+                  <table class="table table-striped">
+                     <thead>
+                        <tr>
+                           <th>Property</th>
+                           <th>Value</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Name</td>
+                           <td>{{product_name}}</td>
+                        </tr>
+                        <tr>
+                           <td>Image</td>
+                           <td><img src="{{product_image_url}}" height=200></td>
+                        </tr>
+                        <tr>
+                           <td>ASIN</td>
+                           <td>{{asin}}</td>
+                        </tr>
+                        <tr>
+                           <td>Reviews</td>
+                           <td>
+                              <img src="/static/ai/{{product_stars_url}}" height="23" vertical-align="center"> 
+                              {{product_rating}} /  {{product_review_cnt}} Reviews
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>Price</td>
+                           <td>{{product_price}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
 
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <div class="card" >
+               <div class="card-body">
+                  <h5 class="card-title">Inisghts from Reviews</h5>
+                  {% if insight_positive_list %}
+                  {% for insight in insight_positive_list %}
+                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
+                  {{ insight.1 }}
+                  </button>
+                  {% endfor %}
+                  </ul>
+                  {% else %}
+                  <p>No Positive Insights.</p>
+                  {% endif %}
+                  {% if insight_negative_list %}
+                  {% for insight in insight_negative_list %}
+                  <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
+                  {{ insight.1 }}
+                  </button>
+                  {% endfor %}
+                  {% else %}
+                  <p>No Negative Insights.</p>
+                  {% endif %}
+                  </p>
+                  {% if insight_positive_list %}
+                  {% for insight in insight_positive_list %}
+                  {% if forloop.first %}
+                  <div class="insight-text collapse show" id="{{ insight.0 }}">
+                     <div class="card card-body " >
+                        {{ insight.2|safe }}
+                     </div>
+                  </div>
+                  {% else %}
+                  <div class="insight-text collapse" id="{{ insight.0 }}">
+                     <div class="card card-body " >
+                        {{ insight.2|safe }}
+                     </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% endif %}
+                  {% if insight_negative_list %}
+                  {% for insight in insight_negative_list %}
+                  <div class="insight-text collapse" id="{{ insight.0 }}">
+                     <div class="card card-body " >
+                        {{ insight.2|safe }}
+                     </div>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  {% endif %}
+               </div>
+            </div>
+            {% if insight_positive_list %}
+               Analysis updated on {{update_date}}
+            {% endif %}
+         </div>
+      </div>
+  
+      <!-- Product #2 -->
+      {% if asin_2 %}
+      <div class="card col-sm">
+         <div class="card-body">
+            <div class="card" >
+               <div class="card-body">
+                  <h5 class="card-title">#2 Product Description</h5>
+                  <table class="table table-striped">
+                     <thead>
+                        <tr>
+                           <th>Property</th>
+                           <th>Value</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Name</td>
+                           <td>{{product_name_2}}</td>
+                        </tr>
+                        <tr>
+                           <td>Image</td>
+                           <td><img src="{{product_image_url_2}}" height=200></td>
+                        </tr>
+                        <tr>
+                           <td>ASIN</td>
+                           <td>{{asin_2}}</td>
+                        </tr>
+                        <tr>
+                           <td>Reviews</td>
+                           <td>
+                              <img src="/static/ai/{{product_stars_url_2}}" height="23" vertical-align="center"> 
+                              {{product_rating_2}} /  {{product_review_cnt_2}} Reviews
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>Price</td>
+                           <td>{{product_price_2}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
 
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <div class="card" >
+               <div class="card-body">
+                  <h5 class="card-title">Inisghts from Reviews</h5>
+                  {% if insight_positive_list_2 %}
+                  {% for insight_2 in insight_positive_list_2 %}
+                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight_2.0 }}_2" aria-expanded="false" aria-controls="{{ insight_2.0 }}_2">
+                  {{ insight_2.1 }}
+                  </button>
+                  {% endfor %}
+                  </ul>
+                  {% else %}
+                  <p>No Positive Insights.</p>
+                  {% endif %}
 
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                  {% if insight_negative_list_2 %}
+                  {% for insight_2 in insight_negative_list_2 %}
+                  <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#{{ insight_2.0 }}_2" aria-expanded="false" aria-controls="{{ insight_2.0 }}_2">
+                  {{ insight_2.1 }}
+                  </button>
+                  {% endfor %}
+                  {% else %}
+                  <p>No Negative Insights.</p>
+                  {% endif %}
+                  </p>
+                  {% if insight_positive_list_2 %}
+                  {% for insight_2 in insight_positive_list_2 %}
+                  {% if forloop.first %}
+                  <div class="insight-text collapse show" id="{{ insight_2.0 }}_2">
+                     <div class="card card-body " >
+                        {{ insight_2.2|safe }}
+                     </div>
+                  </div>
+                  {% else %}
+                  <div class="insight-text collapse" id="{{ insight_2.0 }}_2">
+                     <div class="card card-body " >
+                        {{ insight_2.2|safe }}
+                     </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% endif %}
 
-	<script type="text/javascript">
-		$(document).click(function(e) {
-			if (!$(e.target).is('.insight-text')) {
-		    	$('.collapse').collapse('hide');	    
-		    }
-		});
-	</script>
-  </body>
+                  {% if insight_negative_list_2 %}
+                  {% for insight_2 in insight_negative_list_2 %}
+                  <div class="insight-text collapse" id="{{ insight_2.0 }}_2">
+                     <div class="card card-body " >
+                        {{ insight_2.2|safe }}
+                     </div>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  {% endif %}
+               </div>
+            </div>
+            {% if insight_positive_list_2 %}
+               Analysis updated on {{update_date_2}}
+            {% endif %}
+         </div>
+      </div>
+      {% endif %}
+
+
+      <!-- Product #3 -->
+      {% if asin_3 %}
+      <div class="card col-sm">
+         <div class="card-body">
+            <div class="card" >
+               <div class="card-body">
+                  <h5 class="card-title">#3 Product Description</h5>
+                  <table class="table table-striped">
+                     <thead>
+                        <tr>
+                           <th>Property</th>
+                           <th>Value</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Name</td>
+                           <td>{{product_name_3}}</td>
+                        </tr>
+                        <tr>
+                           <td>Image</td>
+                           <td><img src="{{product_image_url_3}}" height=200></td>
+                        </tr>
+                        <tr>
+                           <td>ASIN</td>
+                           <td>{{asin_3}}</td>
+                        </tr>
+                        <tr>
+                           <td>Reviews</td>
+                           <td>
+                              <img src="/static/ai/{{product_stars_url_3}}" height="23" vertical-align="center"> 
+                              {{product_rating_3}} /  {{product_review_cnt_3}} Reviews
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>Price</td>
+                           <td>{{product_price_3}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <div class="card" >
+               <div class="card-body">
+                  <h5 class="card-title">Inisghts from Reviews</h5>
+                  {% if insight_positive_list_3 %}
+                  {% for insight_3 in insight_positive_list_3 %}
+                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight_3.0 }}_3" aria-expanded="false" aria-controls="{{ insight_3.0 }}_3">
+                  {{ insight_3.1 }}
+                  </button>
+                  {% endfor %}
+                  </ul>
+                  {% else %}
+                  <p>No Positive Insights.</p>
+                  {% endif %}
+                  {% if insight_negative_list_3 %}
+                  {% for insight_3 in insight_negative_list_3 %}
+                  <button class="btn btn-primary bg-danger border-danger" type="button" data-toggle="collapse" data-target="#{{ insight_3.0 }}_3" aria-expanded="false" aria-controls="{{ insight_3.0 }}_3">
+                  {{ insight_3.1 }}
+                  </button>
+                  {% endfor %}
+                  {% else %}
+                  <p>No Negative Insights.</p>
+                  {% endif %}
+                  </p>
+                  {% if insight_positive_list_3 %}
+                  {% for insight_3 in insight_positive_list_3 %}
+                  {% if forloop.first %}
+                  <div class="insight-text collapse show" id="{{ insight_3.0 }}_3">
+                     <div class="card card-body " >
+                        {{ insight_3.2|safe }}
+                     </div>
+                  </div>
+                  {% else %}
+                  <div class="insight-text collapse" id="{{ insight_3.0 }}_3">
+                     <div class="card card-body " >
+                        {{ insight_3.2|safe }}
+                     </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% endif %}
+                  {% if insight_negative_list_3 %}
+                  {% for insight_3 in insight_negative_list_3 %}
+                  <div class="insight-text collapse" id="{{ insight_3.0 }}_3">
+                     <div class="card card-body " >
+                        {{ insight_3.2|safe }}
+                     </div>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  {% endif %}
+               </div>
+            </div>
+            {% if insight_positive_list_3 %}
+               Analysis updated on {{update_date_3}}
+            {% endif %}
+         </div>
+      </div>
+      {% endif %}
+
+   </div>
+
+
+      <br>
+      <br>
+      <br>
+      <div class="container">
+         <div class="alert alert-info text-center">
+            <!-- Button trigger modal -->
+            <strong>For Update</strong> Click on update to run our models on the latest reviews.
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            Analyze!
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Run Analysis</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <div class="modal-body">
+                        You can request to run our model on the latest reviews of these products. It will take up to 10 minutes to finalize our analysis so plesae comeback after you run our analysis.
+                        <br>
+                        You can continue use the product while we run our analysis.
+                     </div>
+                     <div class="modal-footer">
+                        <form class="form-inline" action="{% url 'ai:update' %}" method="post">
+                           {% csrf_token %}
+                           <input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = '{{query_text}}' >
+                           <input type="submit" class="btn btn-primary bg-info border-info" value="Update">
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <br>
+      <br>
+      <br>
+      <footer class="footer bg-dark" style="height: 3rem;vertical-align:bottom;">
+         <div class="container bg-dark" style="vertical-align:bottom;">
+            <span class="text-muted bg-dark" style="vertical-align:bottom;">Data Science W210 Capstone</span>
+         </div>
+      </footer>
+      <!-- Optional JavaScript 
+         jQuery first, then Popper.js, then Bootstrap JS 
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+         -->
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <!-- Popper JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <!-- Latest compiled JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+         $(document).click(function(e) {
+         	if (!$(e.target).is('.insight-text')) {
+             	$('.collapse').collapse('hide');	    
+             }
+         });
+      </script>
+   </body>
 </html>

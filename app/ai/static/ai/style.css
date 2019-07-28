@@ -1,14 +1,12 @@
 h1 { font-family: Pacifico; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; }
 h3 { font-family: Pacifico; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; }
 
-footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   background-color: red;
-   color: white;
-   text-align: center;
+.btn, .form-control {
+  margin: 3px;
+}
+
+.card {
+  margin: 10px;
 }
 
 .footer {

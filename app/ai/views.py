@@ -12,15 +12,23 @@ import datetime
 import ast
 from .insights import insights
 
+
 headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36'}
 #proxies_list = ["35.198.69.233:80","178.128.11.215:80","54.226.53.87:80"]
 # https://www.us-proxy.org/
-proxies_list = [ "165.227.215.71", "67.205.149.230", "165.22.35.148", "159.203.91.6", "138.197.204.55", "165.227.215.62", "67.205.132.241", "67.205.172.239"]
+proxies_list = [ "207.246.118.13", "165.22.187.252", "165.227.201.157", "68.183.121.214", "165.22.187.251"]
 proxies = {'http': random.choice(proxies_list)}
 
 # Create your views here.
-def index(request):
-    return render(request, 'ai/index.html')
+def home(request):
+    return render(request, 'ai/home.html')
+
+def about(request):
+    return render(request, 'ai/about.html')
+
+# Create your views here.
+def actionableinsight(request):
+    return render(request, 'ai/actionableinsight.html')
 
 def result(request):
     query_text = request.POST.get('query_text')
@@ -29,7 +37,15 @@ def result(request):
     asin_list = get_asin(query_text)
     print(query_text)
 
+
     product_asin = str(asin_list[0])
+    print("FROM result - asin_list[0] :  "+str(asin_list))
+
+
+    if len(asin_list) > 1:
+        product_asin_2 = str(asin_list[1])
+    if len(asin_list) > 2:
+        product_asin_3 = str(asin_list[2])
     print ("product_asin from result() : " + product_asin)  
 
     # Get Product Info
@@ -47,22 +63,87 @@ def result(request):
     # if no date, scrape from Amazon
     else : 
         product_name, product_image_url, product_rating, product_review_cnt, product_price, update_date = \
-            scrape_product_info(asin_list[0])
-
-    # Get Update date
-    # last_updated_str = '0000'
-    # last_updated = Insight.objects.raw("SELECT id, update_date FROM ai_insight WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [asin_list[0]])
-    # for dt in last_updated:
-    #    last_updated_str = dt.update_date
-
-    
+            scrape_product_info(product_asin)
+    product_stars_url = "review_" + str(int(float(product_rating)))+".png"
     insight_positive_list = get_insights(str(product_asin), 'P')
     insight_negative_list = get_insights(str(product_asin), 'N')
 
     context = {'update_date': update_date,'query_text': query_text, 'asin':asin_list[0],\
         'product_name':product_name, 'product_rating':product_rating, 'product_review_cnt':product_review_cnt,\
         'insight_negative_list':insight_negative_list, 'insight_positive_list':insight_positive_list,\
-        'product_price':product_price, 'product_image_url':product_image_url}
+        'product_price':product_price, 'product_image_url':product_image_url, 'product_stars_url':product_stars_url,\
+        }
+
+    # Get Product Info 2
+    if len(asin_list) > 1:
+        update_date_2 = product_name_2 =  product_image_url_2 = product_rating_2 = product_review_cnt_2 = product_price_2 = ''
+        product_info_2 = AmazonProduct.objects.raw("SELECT id, update_date, product_name, product_rating, product_review_cnt, product_price, product_image_url \
+            FROM ai_amazonproduct WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [product_asin_2])
+        if len(product_info_2) > 0 :
+            for p in product_info_2:
+                update_date_2 = p.update_date
+                product_name_2 = p.product_name
+                product_image_url_2 = p.product_image_url
+                product_rating_2 = p.product_rating
+                product_review_cnt_2 = p.product_review_cnt
+                product_price_2 = p.product_price
+        # if no date, scrape from Amazon
+        else : 
+            product_name_2, product_image_url_2, product_rating_2, product_review_cnt_2, product_price_2, update_date_2 = \
+                scrape_product_info(product_asin_2)
+        product_stars_url_2 = "review_" + str(int(float(product_rating_2)))+".png"
+        insight_positive_list_2 = get_insights(str(product_asin_2), 'P')
+        insight_negative_list_2 = get_insights(str(product_asin_2), 'N')
+
+        context = {'update_date': update_date,'query_text': query_text, 'asin':asin_list[0],\
+            'product_name':product_name, 'product_rating':product_rating, 'product_review_cnt':product_review_cnt,\
+            'insight_negative_list':insight_negative_list, 'insight_positive_list':insight_positive_list,\
+            'product_price':product_price, 'product_image_url':product_image_url, 'product_stars_url':product_stars_url,\
+
+            'update_date_2': update_date_2, 'asin_2':product_asin_2,\
+            'product_name_2':product_name_2, 'product_rating_2':product_rating_2, 'product_review_cnt_2':product_review_cnt_2,\
+            'insight_negative_list_2':insight_negative_list_2, 'insight_positive_list_2':insight_positive_list_2,\
+            'product_price_2':product_price_2, 'product_image_url_2':product_image_url_2, 'product_stars_url_2':product_stars_url_2,\
+            }
+
+    # Get Product Info 3
+    if len(asin_list) > 2:
+        update_date_3 = product_name_3 =  product_image_url_3 = product_rating_3 = product_review_cnt_3 = product_price_3 = ''
+        product_info_3 = AmazonProduct.objects.raw("SELECT id, update_date, product_name, product_rating, product_review_cnt, product_price, product_image_url \
+            FROM ai_amazonproduct WHERE asin= %s ORDER BY update_date DESC LIMIT 1", [product_asin_3])
+        if len(product_info_3) > 0 :
+            for p in product_info_3:
+                update_date_3 = p.update_date
+                product_name_3 = p.product_name
+                product_image_url_3 = p.product_image_url
+                product_rating_3 = p.product_rating
+                product_review_cnt_3 = p.product_review_cnt
+                product_price_3 = p.product_price
+        # if no date, scrape from Amazon
+        else : 
+            product_name_3, product_image_url_3, product_rating_3, product_review_cnt_3, product_price_3, update_date_3 = \
+                scrape_product_info(product_asin_3)
+        product_stars_url_3 = "review_" + str(int(float(product_rating_3)))+".png"
+        insight_positive_list_3 = get_insights(str(product_asin_3), 'P')
+        insight_negative_list_3 = get_insights(str(product_asin_3), 'N')
+
+        context = {'update_date': update_date,'query_text': query_text, 'asin':asin_list[0],\
+            'product_name':product_name, 'product_rating':product_rating, 'product_review_cnt':product_review_cnt,\
+            'insight_negative_list':insight_negative_list, 'insight_positive_list':insight_positive_list,\
+            'product_price':product_price, 'product_image_url':product_image_url, 'product_stars_url':product_stars_url,\
+
+            'update_date_2': update_date_2, 'asin_2':product_asin_2,\
+            'product_name_2':product_name_2, 'product_rating_2':product_rating_2, 'product_review_cnt_2':product_review_cnt_2,\
+            'insight_negative_list_2':insight_negative_list_2, 'insight_positive_list_2':insight_positive_list_2,\
+            'product_price_2':product_price_2, 'product_image_url_2':product_image_url_2, 'product_stars_url_2':product_stars_url_2,\
+
+            'update_date_3': update_date_3, 'asin_3':product_asin_3,\
+            'product_name_3':product_name_3, 'product_rating_3':product_rating_3, 'product_review_cnt_3':product_review_cnt_3,\
+            'insight_negative_list_3':insight_negative_list_3, 'insight_positive_list_3':insight_positive_list_3,\
+            'product_price_3':product_price_3, 'product_image_url_3':product_image_url_3, 'product_stars_url_3':product_stars_url_3,\
+            }
+
+    print("from result - context : "+ str(context))
 
     return render(request, 'ai/result.html', context)
 
@@ -72,18 +153,28 @@ def update(request):
     print ("Now updating : " + query_text)
 
     asin_list = get_asin(query_text)
-    product_asin = str(asin_list[0])
-    print ("product_asin from result() : " + product_asin)
 
+    if len(asin_list) > 0:
+        update_insights(str(asin_list[0]))
+    if len(asin_list) > 1:
+        update_insights(str(asin_list[1]))
+    if len(asin_list) > 2:
+        update_insights(str(asin_list[2]))
+
+    response = "Updated insights for the query : " + query_text
+
+    return HttpResponse(response)
+
+def update_insights(product_asin):
     model_input = []
     for x in range(10):
-        new_model_input = review_scrape(product_asin,x)
+        new_model_input = review_scrape(product_asin, x, 'recent') + review_scrape(product_asin, x, 'helpful')
+        print(product_asin)
+        print("length of reviews : "+ str(len(new_model_input)))
         if len(new_model_input) < 10:
             break
         else:
             model_input = model_input + new_model_input
-
-    print("######### : " + str(model_input))
 
     out_json_s_pos, out_json_s_neg = insights.main(["-j", model_input])
     out_json_s_pos_dict = ast.literal_eval(out_json_s_pos)
@@ -122,9 +213,9 @@ def update(request):
                         insight_phrase=x, insight_text=y)
                     insight.save()
                     cnt = cnt + 1
-        response = "Updated for the query : " + query_text + " <br> >> Product ASIN : " + product_asin
+        response = "Updated for the product" + product_asin
     else:
-        response = "Have been already updated today for the query : " + query_text + "  / today : " + today_dt
+        response = "Have been already updated today for the product : " + product_asin + "  / today : " + today_dt
 
     return HttpResponse(response)
 
@@ -141,9 +232,20 @@ def get_insights(asin, insight_type):
     insights = Insight.objects.raw("SELECT id, insight_phrase, insight_text FROM ai_insight WHERE asin= %s AND insight_type = %s AND update_date = %s ORDER BY update_date DESC ", [asin, insight_type, update_dt])
     insight_list = []
     cnt = 0
+    temp_phrase = ""
+    temp_text = ""
     for i in insights:
-        insight_list.append(['insight_'+insight_type+str(cnt), i.insight_phrase, i.insight_text])
-        cnt = cnt+1
+        if(temp_text == ""):
+            temp_text = "&#8208;&nbsp" + i.insight_text.replace('<',' ').replace('>',' ')
+        else:
+            temp_text = temp_text + " <br><br> " + "&#8208;&nbsp" + i.insight_text.replace('<',' ').replace('>',' ')
+
+        if (temp_phrase != i.insight_phrase):
+            insight_list.append(['insight_'+insight_type+str(cnt), i.insight_phrase, temp_text])
+            temp_text = ""
+            cnt = cnt + 1
+        temp_phrase = i.insight_phrase
+        
     
     print(" ###  insight_type : " + insight_type)
     print(" ###  insight_list : " + str(insight_list))
@@ -206,30 +308,44 @@ def get_asin(query_text):
 
     parsed_asin_list = parse_page(trim_response, parse_text_start, parse_text_end, 'list')
     parsed_ad_asin_list = parse_page(response, ad_parse_text_start, ad_parse_text_end, 'list')
+    print("parsed_ad_asin_list : " + str(parsed_ad_asin_list))
 
     for x in parsed_ad_asin_list:
         if x in parsed_asin_list:
             parsed_asin_list.remove(x)
+        if (len(x) > 10 and x in parsed_asin_list):
+            parsed_asin_list.remove(x)
+
 
     return parsed_asin_list
 
-def review_scrape(product_asin, page_number):
+def review_scrape(product_asin, page_number, filter_by):
     url_pre = 'https://www.amazon.com/product-reviews/'
-    url_post = '/reviewerType=all_reviews&sortBy=recent&pageNumber=0/ref=cm_cr_arp_d_paging_btm_next_2?pageNumber='
+    url_post = '/reviewerType=all_reviews&sortBy=recent&pageNumber=0/ref=cm_cr_getr_d_paging_btm_next_'
+    url_post_2 = '?pageNumber='
+    url_post_3 = '&sortBy='
 
     parse_text_start = 'class="a-section celwidget">'
     parse_text_end = 'Report abuse'
 
-    url = url_pre + product_asin + url_post + str(page_number)
+    url = url_pre + product_asin + url_post + str(page_number) + url_post_2 + str(page_number) + url_post_3 + filter_by
     print(url)
+    print("Scraping... "+product_asin + " / Page : " + str(page_number))
     response = requests.get(url, headers=headers, proxies=proxies).text
 
+    if (response.find(parse_text_start) > 0):
+        print ("Scraping SUCCESS!")
+    else:
+        print ("Scraping FAIL!" + response[:100])
+
     parsed_review = parse_page(response, parse_text_start, parse_text_end, 'list')
+    print ("Length of Review : " + str(len(parsed_review)))
 
     model_input = []
 
     asin = product_asin
     for x in range(len(parsed_review)):
+        print("Review : " + str(x))
         parse_block = parsed_review[x]
 
         reviewer_id = parse_string(parse_block, "amzn1.account.", "/ref=cm_cr_arp_d_gw_btm")
@@ -282,8 +398,11 @@ def scrape_product_info(product_asin):
     print(url)
     response = requests.get(url, headers=headers, proxies=proxies).text
 
-    product_name  = parse_string(response, '<span class="a-list-item"><div class="a-section"><img alt="', '" src="')
-    print (" product_name ###### : " + product_name)
+    product_name2  = parse_string(response, '<span class="a-list-item"><div class="a-section"><img alt="', '" src="')
+    print (" product_name ###### : " + product_name2)
+
+    product_name  = parse_string(response, '<span id="productTitle" class="a-size-large">', '</span>')
+    print (" product_name2 ###### : " + product_name)
 
     product_image_url  = parse_string(response, 'data-old-hires="', '"  class="')
     print (" product_image_url ###### : " + product_image_url)
@@ -310,17 +429,20 @@ def scrape_product_info(product_asin):
     
 
 def parse_page(original_text, parse_text_start, parse_text_end, string_list):
+    print("Now in parse_page!")
     parsed_list = []
     parsed_string = ""
     original_text_processing = ""
     if(original_text.find(parse_text_start) > 0):
+        print("[parse_page] Found : " + parse_text_start)
         original_text_processing = original_text[original_text.find(parse_text_start)+len(parse_text_start):]
 
         cnt=0
         while cnt < 10:
             parsed_text = original_text_processing[:original_text_processing.find(parse_text_end)]
+            print("[parse_page] parsed_text length : " + str(len(parsed_text)))
 
-            if len(parsed_text) > 0:
+            if (len(parsed_text) > 0 and len(parsed_text) < 10000):
                 parsed_list.append(parsed_text)
                 parsed_string = parsed_string + parsed_text
 
@@ -333,8 +455,11 @@ def parse_page(original_text, parse_text_start, parse_text_end, string_list):
             else:
                 break
     else:
+        print("[parse_page] Not Found : " + parse_text_start)
         parsed_list = ['NO_SEARCH_RESULT']
         parsed_string = 'NO_SEARCH_RESULT'
+
+    print("Result! : " + str(len(parsed_list)))
 
     if string_list == 'string':
         return parsed_string
