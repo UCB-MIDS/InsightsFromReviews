@@ -8,5 +8,6 @@ urlpatterns = [
 	path('about/', views.about, name='about'),
     path('actionableinsight/', views.actionableinsight, name='actionableinsight'),
     path('result/', views.result, name='result'),
+    path('result/<slug:query_text_from_url>/', views.result, name='result'),
     path('update/', views.update, name='update'),
 ]

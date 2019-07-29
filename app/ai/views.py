@@ -30,9 +30,10 @@ def about(request):
 def actionableinsight(request):
     return render(request, 'ai/actionableinsight.html')
 
-def result(request):
+def result(request, query_text_from_url='NO_QUERY'):
     query_text = request.POST.get('query_text')
-
+    if (query_text_from_url != 'NO_QUERY'):
+        query_text = query_text_from_url
     #asin_list = asin_scrape(query_text)
     asin_list = get_asin(query_text)
     print(query_text)
@@ -175,6 +176,7 @@ def update_insights(product_asin):
             break
         else:
             model_input = model_input + new_model_input
+    print(">>>>>> MODEL INPUT : " + str(model_input))
 
     out_json_s_pos, out_json_s_neg = insights.main(["-j", model_input])
     out_json_s_pos_dict = ast.literal_eval(out_json_s_pos)
