@@ -209,7 +209,7 @@ def printAprioriResults(items):
 # Utility functions
 
 
-stopwords = stopwords.words('english')
+stop_words = stopwords.words('english')
 # Map between the lemma and the actual word
 lem_word_mapping = {}
 
@@ -260,7 +260,7 @@ def clean(text, remove_stopwords = False):
     text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
     text = re.sub(r'\<a href', ' ', text)
     text = re.sub(r'&amp;', '', text)
-    text = re.sub(r'[_"\-;%()|+&=*%.,!?:#$@\[\]/]', ' ', text)
+    text = re.sub(r'["\-;%()|+&=*%.,!?:#$@\[\]/]', ' ', text)
     text = re.sub(r'<br />', ' ', text)
     text = re.sub(r'\'', ' ', text)
 
@@ -275,7 +275,7 @@ def clean(text, remove_stopwords = False):
 
 def acceptableWord(word):
     """Checks conditions for acceptable word: length, stopword."""
-    accepted = bool((2 <= len(word) <= 40) and word.lower() not in stopwords)
+    accepted = bool((2 <= len(word) <= 40) and word.lower() not in stop_words)
     return accepted
 
 # extract words after normalizing and checking if acceptable
