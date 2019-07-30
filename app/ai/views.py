@@ -339,6 +339,7 @@ def review_scrape(product_asin, page_number, filter_by):
         print ("Scraping SUCCESS!")
     else:
         print ("Scraping FAIL!" + response[:100])
+        return []
 
     parsed_review = parse_page(response, parse_text_start, parse_text_end, 'list')
     print ("Length of Review : " + str(len(parsed_review)))
