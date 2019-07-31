@@ -358,9 +358,9 @@
       <div class="container">
          <div class="alert alert-info text-center">
             <!-- Button trigger modal -->
-            <strong>For Update</strong> Click on update to run our models on the latest reviews.
+            If you don't see insights for products. You can <strong>request to run analysis</strong> on a specific product or query.
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Analyze!
+            Request Analysis
             </button>
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -373,15 +373,15 @@
                         </button>
                      </div>
                      <div class="modal-body">
-                        You can request to run our model on the latest reviews of these products. It will take up to 10 minutes to finalize our analysis so plesae comeback after you run our analysis.
+                        Running our analysis can take up to 10 minutes.
                         <br>
-                        You can continue use the product while we run our analysis.
+                        You can continue to use our product while we run the analysis.
                      </div>
                      <div class="modal-footer">
                         <form class="form-inline" action="{% url 'ai:update' %}" method="post">
                            {% csrf_token %}
                            <input type="text" class="form-control mb-2 mr-sm-2" name="query_text" value = '{{query_text}}' >
-                           <input type="submit" class="btn btn-primary bg-info border-info" value="Update">
+                           <input type="submit" class="btn btn-primary bg-info border-info" value="Run analysis">
                         </form>
                      </div>
                   </div>
