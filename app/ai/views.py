@@ -3,9 +3,11 @@ from django.template import loader
 from django.shortcuts import render
 from fake_useragent import UserAgent
 
+
 from .models import AmazonReview, Insight, AmazonProduct
 from django.db.models import Max
 
+import time
 import random
 import requests
 import datetime
@@ -16,7 +18,7 @@ from .insights import insights
 headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36'}
 #proxies_list = ["35.198.69.233:80","178.128.11.215:80","54.226.53.87:80"]
 # https://www.us-proxy.org/
-proxies_list = [ "207.246.118.13", "165.22.187.252", "165.227.201.157", "68.183.121.214", "165.22.187.251"]
+proxies_list = ["104.245.69.17","70.169.132.131","24.172.34.114","79.141.163.75","70.169.132.131"]
 proxies = {'http': random.choice(proxies_list)}
 
 # Create your views here.
@@ -286,6 +288,7 @@ def asin_scrape(query_text):
     url = url_pre + query_text + url_post
     print(url)
 
+    time.sleep(0.7*random.random())
     response = requests.get(url, headers=headers, proxies=proxies).text
     parsed_asin_list = parse_page(response, parse_text_start, parse_text_end, 'list')
 
@@ -305,6 +308,7 @@ def get_asin(query_text):
 
     url = url_pre + query_text + url_post
     print(url)
+    time.sleep(0.5*random.random())
     response = requests.get(url, headers=headers, proxies=proxies).text
     trim_response = trim_string_pre(response, trim_pre)
 
@@ -333,6 +337,7 @@ def review_scrape(product_asin, page_number, filter_by):
     url = url_pre + product_asin + url_post + str(page_number) + url_post_2 + str(page_number) + url_post_3 + filter_by
     print(url)
     print("Scraping... "+product_asin + " / Page : " + str(page_number))
+    time.sleep(0.5*random.random())
     response = requests.get(url, headers=headers, proxies=proxies).text
 
     if (response.find(parse_text_start) > 0):
@@ -399,6 +404,7 @@ def scrape_product_info(product_asin):
 
     url = url_pre + product_asin
     print(url)
+    time.sleep(0.5*random.random())
     response = requests.get(url, headers=headers, proxies=proxies).text
 
     product_name2  = parse_string(response, '<span class="a-list-item"><div class="a-section"><img alt="', '" src="')
