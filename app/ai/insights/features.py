@@ -10,7 +10,7 @@ from collections import defaultdict
 
 # Loading Data
 
-def loadFromDb(file, count = 0):
+def loadFromDb(file, count = 0, filter_l = ""):
     """
     Read count number of lines from the JSON DB into a dictionary
     Count = 0 reads in all the lines
@@ -22,8 +22,10 @@ def loadFromDb(file, count = 0):
 
     with open(file, "r") as f:
         for line in tqdm(f):
-            file_d.append(json.loads(line))
-            n =  n + 1
+            line = json.loads(line)
+            if (filter_l and (line['asin'] == filter_l)) or not filter_l:
+                file_d.append(line)
+                n =  n + 1
             if count > 0 and n == count:
                 break
     print(str(len(file_d)) + " Reviews written to the dictionary ")
@@ -76,14 +78,16 @@ def loadToString(reviews_sent):
     Consolidate review text into a string
     """
 
-    reviews_str = "".join(s for s in reviews_sent)
+    # reviews_str = "".join(s for s in reviews_sent)
+    # Space among the joined reviews to help with sentence boundaries
+    reviews_str = " ".join(s for s in reviews_sent)
     print("Converted to " + str(len(reviews_str)) + " len reviews string")
     return reviews_str
 
 
 # Summarization
 
-def summarizeString(reviews_str, ratio = .5):
+def summarizeString(reviews_str, ratio = 0.5):
     """
     Summarize the text using gensim
 
@@ -96,7 +100,7 @@ def summarizeString(reviews_str, ratio = .5):
     return reviews_sum_str
 
 
-def stringToSentences(reviews_str, in_sent_end_chars = ('pros:', 'cons:', '[','][','.','?','!')):
+def stringToSentences(reviews_str, in_sent_end_chars = ('pros:', 'cons:', '[','][','.','?','!', ']')):
     """
     Break the string into sentences
     Option to give keywords or tokens for separating sentences
@@ -107,6 +111,7 @@ def stringToSentences(reviews_str, in_sent_end_chars = ('pros:', 'cons:', '[',']
     	sent_end_chars = in_sent_end_chars
 
     sent_tokenizer1 = PunktSentenceTokenizer(lang_vars = ReviewLangVars())
+    # sent_tokenizer2 = PunktSentenceTokenizer()
     sent_review = sent_tokenizer1.tokenize(reviews_str)
     print("Converted to: " + str(len(sent_review)) + " Sentences ")
     return sent_review
@@ -120,6 +125,7 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
 
     positive_review=[]
     negative_review=[]
+    neutral_review=[]
 
     # Extracting sentiments from the positive reviews
     for sentence in tqdm(sent_pos_review):
@@ -127,16 +133,17 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
         sentence = languageUtils.clean(sentence)
         # Crashes
         # sentence = languageUtils.replacePronouns(sentence)
-        for i in items:
-            if i[0][0] in sentence:
-                x=languageUtils.getPolarity(sentence)
-                if(x=="pos"):
-                    positive_review.append(sentence)
-                elif(x=="neg"):
-                    negative_review.append(sentence)
-                else:
-                    # neutral_review.append(sentence)
-                    positive_review.append(sentence)
+        # for i in items:
+        #     if i[0][0] in sentence:
+        x=languageUtils.getPolarity(sentence)
+        if(x=="pos"):
+            positive_review.append(sentence)
+        elif(x=="neg"):
+            negative_review.append(sentence)
+        else:
+            neutral_review.append(sentence)
+            # positive_review.append(sentence)
+                # break
 
     # Extracting sentiments from the negative reviews
     for sentence in tqdm(sent_neg_review):
@@ -144,18 +151,22 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
         sentence = languageUtils.clean(sentence)
         # Crashes
         # sentence = languageUtils.replacePronouns(sentence)
-        for i in items:
-            if i[0][0] in sentence:
-                x=languageUtils.getPolarity(sentence)
-                if(x=="pos"):
-                    positive_review.append(sentence)
-                elif(x=="neg"):
-                    negative_review.append(sentence)
-                else:
-                    negative_review.append(sentence)
+        # for i in items:
+        #     if i[0][0] in sentence:
+        x=languageUtils.getPolarity(sentence)
+        if(x=="pos"):
+            positive_review.append(sentence)
+        elif(x=="neg"):
+            negative_review.append(sentence)
+        else:
+            # negative_review.append(sentence)
+            neutral_review.append(sentence)
+                # break
 
     print("Extracted : " + str(len(positive_review)) + " positive sentences")
+    print(positive_review)
     print("Extracted : " + str(len(negative_review)) + " negative sentences")
+    print(negative_review)
 
     # Convert to tokens
     pos_sen_tok = []
@@ -205,6 +216,7 @@ def extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patter
 
     # Extracting sentiments from the positive reviews
     for sentence in tqdm(sent_pos_review):
+        sentence = languageUtils.clean(sentence)
         for i in items:
             if i[0][0] in sentence:
                 #print(i[0][0] +"--" + sentence)
@@ -219,6 +231,7 @@ def extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patter
 
     # Extracting sentiments from the negative reviews
     for sentence in tqdm(sent_neg_review):
+        sentence = languageUtils.clean(sentence)
         for i in items:
             if i[0][0] in sentence:
                 #print(i[0][0] +"--" + sentence)
@@ -240,12 +253,12 @@ def extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patter
     neg_sen_tok = []
     neutral_sen_tok = []
 
+    for sentence in tqdm(neutral_review):
+        neutral_sen_tok.append(nltk.word_tokenize(sentence))
     for sentence in tqdm(positive_review):
         pos_sen_tok.append(nltk.word_tokenize(sentence))
     for sentence in tqdm(negative_review):
         neg_sen_tok.append(nltk.word_tokenize(sentence))
-    for sentence in tqdm(neutral_review):
-        neutral_sen_tok.append(nltk.word_tokenize(sentence))
 
     print("Tokenized : " + str(len(neutral_sen_tok)) + " neutral sentences")
     print("Tokenized : " + str(len(pos_sen_tok)) + " positive sentences")

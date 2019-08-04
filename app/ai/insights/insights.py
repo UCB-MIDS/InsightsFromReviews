@@ -80,9 +80,11 @@ def main(argv):
 
 
     # Summarize all strings
-    reviews_str = features.summarizeString(reviews_str)
-    reviews_pos_str = features.summarizeString(reviews_pos_str)
-    reviews_neg_str = features.summarizeString(reviews_neg_str)
+    # Let the algorithm decide the size of the summary
+    ratio = 0.5
+    reviews_str = features.summarizeString(reviews_str, ratio)
+    reviews_pos_str = features.summarizeString(reviews_pos_str, ratio)
+    reviews_neg_str = features.summarizeString(reviews_neg_str, ratio)
     print(len(reviews_str))
 
     # Strings to sentences
@@ -94,8 +96,8 @@ def main(argv):
     # Getting the most relevant items from the reviews
     items = []
     rules = []
-    minSupport = .1
-    minConfidence = .1
+    minSupport = .3
+    minConfidence = .4
 
     items, rules = languageUtils.getItems(sent_full_review, minSupport, minConfidence)
     print(len(items))
@@ -116,9 +118,10 @@ def main(argv):
 
     extracted_pos = []
     extracted_neg = []
+    extracted_neutral = []
 
     # extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
-    extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
+    extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patterns, items)
 
     # Frequency distribution
     freqdist_pos = nltk.FreqDist(word for word in extracted_pos)

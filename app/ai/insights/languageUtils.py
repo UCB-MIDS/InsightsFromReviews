@@ -223,7 +223,7 @@ def stem(word):
     """Normalises words to lowercase and stems and lemmatizes it."""
     stemmer = nltk.stem.porter.PorterStemmer()
     word = word.lower()
-    word = word.replace("'","").replace('"','').replace('.','')
+    word = word.replace("'"," ").replace('"',' ').replace('.',' ')
     word1 = stemmer.stem(word)
     return word1
 
@@ -233,8 +233,8 @@ def normalise(word):
     stemmer = nltk.stem.porter.PorterStemmer()
     lem = nltk.WordNetLemmatizer()
     word = word.lower()
-    word1 = stemmer.stem(word)
-    word2 = lem.lemmatize(word1)
+    # word1 = stemmer.stem(word)
+    word2 = lem.lemmatize(word)
     if word != word2:
         lem_word_mapping[word2] = word
     return word2
@@ -257,9 +257,9 @@ def clean(text, remove_stopwords = False):
     text = " ".join(new_text)
 
     # Format words and remove unwanted characters
-    text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+    text = re.sub(r'https?:\/\/.*[\r\n]*', ' ', text, flags=re.MULTILINE)
     text = re.sub(r'\<a href', ' ', text)
-    text = re.sub(r'&amp;', '', text)
+    text = re.sub(r'&amp;', ' ', text)
     text = re.sub(r'["\-;%()|+&=*%.,!?:#$@\[\]/]', ' ', text)
     text = re.sub(r'<br />', ' ', text)
     text = re.sub(r'\'', ' ', text)
@@ -275,13 +275,13 @@ def clean(text, remove_stopwords = False):
 
 def acceptableWord(word):
     """Checks conditions for acceptable word: length, stopword."""
-    accepted = bool((2 <= len(word) <= 40) and word.lower() not in stop_words)
+    accepted = bool((2 <= len(word) <= 40) and word.lower())
     return accepted
 
 # extract words after normalizing and checking if acceptable
 def getTerms(tree):
     """Returns the words after checking acceptable conditions, normalizing and lemmatizing"""
-    term = [ stem(w) for w in tree if acceptableWord(w) ]
+    term = [ normalise(w) for w in tree if acceptableWord(w) ]
     return term
 
 def getTerms1(tree):
@@ -327,7 +327,7 @@ def getItems(sent_review, minSupport = .1, minConfidence=.1):
 
 # Polarity
 
-def getPolarity(sentence):
+def getPolarity_lex(sentence):
     """
     Polarity of the sentences, conventional Liu and Hu Opinion Lexicon
     Takes in a sentence and returns the sentiment of the sentence by counting the no of positive and negitive
@@ -376,6 +376,10 @@ def downloadPerceptronTagger():
     """ Download the perceptron tagger """
     nltk.download('averaged_perceptron_tagger')
 
+def downloadVaderLexicon():
+    """ Download vader_lexicon for sentiment analysis """
+    nltk.download('vader_lexicon')
+
 
 def sentenceTokenize(reviews):
     """ convert sentences to token/words"""
@@ -407,8 +411,10 @@ def extractPhrasesFromTagged(tagged, feature_patterns):
         for ter in term:
             word_concat = ""
             for word in ter:
-                word_concat = word_concat + " " + word
-
+                if word_concat:
+                    word_concat = word_concat + " " + word
+                else:
+                    word_concat = word_concat + word
             if (len(ter) > 1):
                 out.append(word_concat)
 
@@ -455,6 +461,38 @@ def extractSubjective(review):
             output += sent+"  "
     return output
 
+def getPolarity(sentence):
+    """
+    Input: A sentence from review
+    Output: polarity based on textblob polarity score
+    """
+    blob = TextBlob(sentence)
+    print(format(blob.sentiment))
+    if blob.sentiment[0] > 0.1:
+        return 'pos'
+    elif blob.sentiment[0] < 0.1:
+        return 'neg'
+    else:
+        return 'neutral'
+
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+downloadVaderLexicon()
+
+def getPolarityVader(sentence):
+    """
+    Input: A sentence from review
+    Output: polarity based on textblob polarity score
+    """
+    sid = SentimentIntensityAnalyzer()
+    ss = sid.polarity_scores(sentence)
+    print(ss)
+
+    if ss["compound"] == 0.0:
+        return 'neutral'
+    elif ss["compound"] > 0.0:
+        return 'pos'
+    else:
+        return 'neg'
 
 # spacy
 def replacePronouns(review):
