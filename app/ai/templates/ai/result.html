@@ -87,7 +87,7 @@
                   <h5 class="card-title">Insights from Reviews</h5>
                   {% if insight_positive_list %}
                   {% for insight in insight_positive_list %}
-                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
+                  <button class="btn btn-primary bg-success border-success" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
                   {{ insight.1 }}
                   </button>
                   {% endfor %}
@@ -189,7 +189,7 @@
                   <h5 class="card-title">Insights from Reviews</h5>
                   {% if insight_positive_list_2 %}
                   {% for insight_2 in insight_positive_list_2 %}
-                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight_2.0 }}_2" aria-expanded="false" aria-controls="{{ insight_2.0 }}_2">
+                  <button class="btn btn-primary bg-success border-success" type="button" data-toggle="collapse" data-target="#{{ insight_2.0 }}_2" aria-expanded="false" aria-controls="{{ insight_2.0 }}_2">
                   {{ insight_2.1 }}
                   </button>
                   {% endfor %}
@@ -294,7 +294,7 @@
                   <h5 class="card-title">Insights from Reviews</h5>
                   {% if insight_positive_list_3 %}
                   {% for insight_3 in insight_positive_list_3 %}
-                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ insight_3.0 }}_3" aria-expanded="false" aria-controls="{{ insight_3.0 }}_3">
+                  <button class="btn btn-primary bg-success border-success" type="button" data-toggle="collapse" data-target="#{{ insight_3.0 }}_3" aria-expanded="false" aria-controls="{{ insight_3.0 }}_3">
                   {{ insight_3.1 }}
                   </button>
                   {% endfor %}
