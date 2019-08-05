@@ -417,7 +417,7 @@ def extractPhrasesFromTagged(tagged, feature_patterns):
                     word_concat = word_concat + word
             if (len(ter) > 1):
                 out.append(word_concat)
-
+    print('Extracted ' + str(len(out)) + ' Phrases from tagged sentences')
     return out
 
 
@@ -446,6 +446,7 @@ def getRealWords(phrases):
                     newword = newword + " " +  b
                     #print(newword)
         new_phrases.append((newword,a[1]))
+    print('Converted ' + str(len(phrases)) + ' lemma phrases to ' + str(len(new_phrases)) + ' real word phrases')
     return new_phrases
 
 def getRealWordsAll(phrases):
@@ -473,6 +474,7 @@ def getRealWordsAll(phrases):
                     newword = newword + " " +  b
                     #print(newword)
         new_phrases.append(newword)
+    print('Converted ' + str(len(phrases)) + ' lemma phrases to ' + str(len(new_phrases)) + ' real word phrases')
     return new_phrases
 
 def extractSubjective(review):
@@ -494,7 +496,7 @@ def getPolarity(sentence):
     Output: polarity based on textblob polarity score
     """
     blob = TextBlob(sentence)
-    print(format(blob.sentiment))
+    # print(format(blob.sentiment))
     if blob.sentiment[0] > 0.1:
         return 'pos'
     elif blob.sentiment[0] < 0.1:
@@ -512,7 +514,7 @@ def getPolarityVader(sentence):
     """
     sid = SentimentIntensityAnalyzer()
     ss = sid.polarity_scores(sentence)
-    print(ss)
+    # print(ss)
 
     if ss["compound"] == 0.0:
         return 'neutral'

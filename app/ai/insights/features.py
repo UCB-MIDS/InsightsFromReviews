@@ -96,7 +96,7 @@ def summarizeString(reviews_str, ratio = 0.5):
     reviews_sum_str = ""
     print(str(len(reviews_str)) + " len input string ")
     reviews_sum_str = summarize(reviews_str, ratio)
-    print(str(len(reviews_sum_str)) + " len output summarized string ")
+    print(str(len(reviews_sum_str)) + " len summarized string ")
     return reviews_sum_str
 
 
@@ -164,9 +164,9 @@ def extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, it
                 # break
 
     print("Extracted : " + str(len(positive_review)) + " positive sentences")
-    print(positive_review)
+    # print(positive_review)
     print("Extracted : " + str(len(negative_review)) + " negative sentences")
-    print(negative_review)
+    # print(negative_review)
 
     # Convert to tokens
     pos_sen_tok = []
