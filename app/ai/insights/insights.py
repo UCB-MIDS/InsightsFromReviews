@@ -178,8 +178,12 @@ def main(argv):
     # Frequency distribution
     freqdist_pos = nltk.FreqDist(word for word in extracted_pos)
     most_common_pos = freqdist_pos.most_common(20)
+    print('Most common RAW phrases from the positive reviews: ')
+    pprint(most_common_pos)
     freqdist_neg = nltk.FreqDist(word for word in extracted_neg)
     most_common_neg = freqdist_neg.most_common(20)
+    print('Most common RAW phrases from the negative reviews: ')
+    pprint(most_common_neg)
 
     # Convert most common phrases to real words
     most_common_pos_real = languageUtils.getRealWords(most_common_pos)
