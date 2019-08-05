@@ -93,15 +93,53 @@ def main(argv):
     sent_neg_review = features.stringToSentences(reviews_neg_str)
     # print(sent_full_review[0])
 
+    # Time to remove all the stop words
+    # Before tokenization
+
+    sent_full_review_clean = []
+    for sentence in tqdm(sent_full_review):
+        sent_full_review_clean.append(languageUtils.clean(sentence, remove_stopwords=True))
+
+    sent_pos_review_clean = []
+    for sentence in tqdm(sent_pos_review):
+        sent_pos_review_clean.append(languageUtils.clean(sentence, remove_stopwords=True))
+
+    sent_neg_review_clean = []
+    for sentence in tqdm(sent_neg_review):
+        sent_neg_review_clean.append(languageUtils.clean(sentence, remove_stopwords=True))
+
+    print("Cleaned : " + str(len(sent_full_review_clean)) + " all sentences")
+    print("Cleaned : " + str(len(sent_pos_review_clean)) + " positive sentences")
+    print("Cleaned : " + str(len(sent_neg_review_clean)) + " negative sentences")
+
+
     # Getting the most relevant items from the reviews
     items = []
     rules = []
-    minSupport = .3
-    minConfidence = .4
+    minSupport = .1
+    minConfidence = .6
 
-    items, rules = languageUtils.getItems(sent_full_review, minSupport, minConfidence)
+    items, rules = languageUtils.getItems(sent_full_review_clean, minSupport, minConfidence)
     print(len(items))
     print(items)
+
+    # Good time to TFIDF
+    # On clean sentences
+    vectorizer_pos = TfidfVectorizer(ngram_range=(2,3))
+    tf_pos = vectorizer_pos.fit_transform(sent_pos_review_clean)
+    feature_names_pos = vectorizer_pos.get_feature_names()
+    phrase_scores_pos = vectorizer_pos.idf_
+    names_scores_df_pos = pd.DataFrame({'feature_names':feature_names_pos})
+    names_scores_df_pos['phrase_scores'] = pd.DataFrame(phrase_scores_pos)
+    print('TFIDF Data Frame size: ' + str(names_scores_df_pos.size) + ' For positive sentences')
+
+    vectorizer_neg = TfidfVectorizer(ngram_range=(2,3))
+    tf_neg = vectorizer_neg.fit_transform(sent_neg_review_clean)
+    feature_names_neg = vectorizer_neg.get_feature_names()
+    phrase_scores_neg = vectorizer_neg.idf_
+    names_scores_df_neg = pd.DataFrame({'feature_names':feature_names_neg})
+    names_scores_df_neg['phrase_scores'] = pd.DataFrame(phrase_scores_neg)
+    print('TFIDF Data Frame size: ' + str(names_scores_df_neg.size) + ' For negative sentences')
 
     # Patterns that we want to extract
     # We think these are the ones that contain features
@@ -123,17 +161,34 @@ def main(argv):
     # extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
     extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patterns, items)
 
+    # Convert all phrases to real words
+    extracted_pos_real = languageUtils.getRealWords(extracted_pos)
+    extracted_neg_real = languageUtils.getRealWords(extracted_neg)
+
+
     # Frequency distribution
-    freqdist_pos = nltk.FreqDist(word for word in extracted_pos)
+    freqdist_pos = nltk.FreqDist(word for word in extracted_pos_real)
     most_common_pos = freqdist_pos.most_common()
-    freqdist_neg = nltk.FreqDist(word for word in extracted_neg)
+    freqdist_neg = nltk.FreqDist(word for word in extracted_neg_real)
     most_common_neg = freqdist_neg.most_common()
 
-    # Convert phrases to real words
-    most_common_pos_real = languageUtils.getRealWords(most_common_pos)
-    print(most_common_pos_real)
-    most_common_neg_real = languageUtils.getRealWords(most_common_neg)
-    print(most_common_neg_real)
+    # # Convert most common phrases to real words
+    # most_common_pos_real = languageUtils.getRealWords(most_common_pos)
+    # print(most_common_pos_real)
+    # most_common_neg_real = languageUtils.getRealWords(most_common_neg)
+    # print(most_common_neg_real)
+
+    # bi-gram and tri-gram features that are also our extracted phrases
+    extracted_df_pos = names_scores_df_pos[names_scores_df_pos.feature_names.isin(extracted_pos_real)]
+    print(extracted_df_pos.size)
+    extracted_df_pos['freq'] = extracted_df_pos.apply(lambda row: freqdist_pos[row.feature_names], axis=1)
+
+    extracted_df_neg = names_scores_df_neg[names_scores_df_neg.feature_names.isin(extracted_neg_real)]
+    print(extracted_df_neg.size)
+    extracted_df_neg['freq'] = extracted_df_neg.apply(lambda row: freqdist_neg[row.feature_names], axis=1)
+
+    # Sort the items by support
+    items.sort(key=lambda tup: tup[1], reverse=True)
 
     # Latest time in a string
     timestr = time.strftime("%Y%m%d-%H%M%S")
@@ -144,13 +199,13 @@ def main(argv):
 
     # featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, sentence_count )
     # Getting sentences with the positive phrases
-    out_json_s_pos = features.featuresAndContext(items, most_common_pos_real, sent_pos_review, 10, 10)
+    out_json_s_pos = features.featuresAndContext(items, most_common_pos, sent_pos_review, 10, 10)
     with open(output_file_pos, 'w') as jf:
         jf.write(out_json_s_pos)
     print("Pos phrases written to: " + output_file_pos)
 
     # Getting sentences with the negative phrases
-    out_json_s_neg = features.featuresAndContext(items, most_common_neg_real, sent_neg_review, 10, 10)
+    out_json_s_neg = features.featuresAndContext(items, most_common_neg, sent_neg_review, 10, 10)
     with open(output_file_neg, 'w') as jfn:
         jfn.write(out_json_s_neg)
     print("Neg phrases written to: " + output_file_neg)

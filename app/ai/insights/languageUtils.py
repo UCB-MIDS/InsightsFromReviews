@@ -10,7 +10,7 @@ from nltk.tokenize import treebank
 from tqdm import tqdm
 import inflect
 import spacy # version 2.1.3
-import neuralcoref # version 4.0
+# import neuralcoref # version 4.0
 from textblob import TextBlob
 
 '''
@@ -316,7 +316,7 @@ def getNouns(sent_review):
     return revset
 
 # Top list of items referred to in the reviews
-def getItems(sent_review, minSupport = .1, minConfidence=.1):
+def getItems(sent_review, minSupport = .1, minConfidence=.6):
     """ Get the most relevant nouns/items from the reviewText
         Assumption is that these items are the subject of the conversation
     """
@@ -446,6 +446,33 @@ def getRealWords(phrases):
                     newword = newword + " " +  b
                     #print(newword)
         new_phrases.append((newword,a[1]))
+    return new_phrases
+
+def getRealWordsAll(phrases):
+    """ Unlemmatize and unstem using the dictionary created earlier """
+    p = inflect.engine()
+    new_phrases=[]
+    for a in tqdm(phrases):
+        newword="";
+        found=False;
+        for b in a.split():
+            for x in lem_word_mapping:
+                #print(x)
+                #print(b)
+                if b==x:
+                    found=True
+                    sing=(lem_word_mapping[x] if p.singular_noun(lem_word_mapping[x])==False else p.singular_noun(lem_word_mapping[x]))
+                    if newword=="":
+                        newword = newword + sing
+                    else:
+                        newword = newword + " " +  sing
+            if found==False:
+                if newword=="":
+                    newword = newword + b
+                else:
+                    newword = newword + " " +  b
+                    #print(newword)
+        new_phrases.append(newword)
     return new_phrases
 
 def extractSubjective(review):

@@ -81,7 +81,7 @@ def loadToString(reviews_sent):
     # reviews_str = "".join(s for s in reviews_sent)
     # Space among the joined reviews to help with sentence boundaries
     reviews_str = " ".join(s for s in reviews_sent)
-    print("Converted to " + str(len(reviews_str)) + " len reviews string")
+    print("Converted " + str(len(reviews_str)) + " len reviews string")
     return reviews_str
 
 
@@ -96,7 +96,7 @@ def summarizeString(reviews_str, ratio = 0.5):
     reviews_sum_str = ""
     print(str(len(reviews_str)) + " len input string ")
     reviews_sum_str = summarize(reviews_str, ratio)
-    print(str(len(reviews_sum_str)) + " len output string ")
+    print(str(len(reviews_sum_str)) + " len output summarized string ")
     return reviews_sum_str
 
 
@@ -248,16 +248,35 @@ def extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patter
     print("Extracted : " + str(len(positive_review)) + " positive sentences")
     print("Extracted : " + str(len(negative_review)) + " negative sentences")
 
+    # Time to remove all the stop words
+    # Before tokenization
+
+    neutral_review_clean = []
+    for sentence in tqdm(neutral_review):
+        neutral_review_clean.append(languageUtils.clean(sentence, remove_stopwords=True))
+
+    positive_review_clean = []
+    for sentence in tqdm(positive_review):
+        positive_review_clean.append(languageUtils.clean(sentence, remove_stopwords=True))
+
+    negative_review_clean = []
+    for sentence in tqdm(negative_review):
+        negative_review_clean.append(languageUtils.clean(sentence, remove_stopwords=True))
+
+    print("Cleaned : " + str(len(neutral_review_clean)) + " neutral sentences")
+    print("Cleaned : " + str(len(positive_review_clean)) + " positive sentences")
+    print("Cleaned : " + str(len(negative_review_clean)) + " negative sentences")
+
     # Convert to tokens
     pos_sen_tok = []
     neg_sen_tok = []
     neutral_sen_tok = []
 
-    for sentence in tqdm(neutral_review):
+    for sentence in tqdm(neutral_review_clean):
         neutral_sen_tok.append(nltk.word_tokenize(sentence))
-    for sentence in tqdm(positive_review):
+    for sentence in tqdm(positive_review_clean):
         pos_sen_tok.append(nltk.word_tokenize(sentence))
-    for sentence in tqdm(negative_review):
+    for sentence in tqdm(negative_review_clean):
         neg_sen_tok.append(nltk.word_tokenize(sentence))
 
     print("Tokenized : " + str(len(neutral_sen_tok)) + " neutral sentences")
