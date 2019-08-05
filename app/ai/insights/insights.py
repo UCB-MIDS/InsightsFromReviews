@@ -6,6 +6,8 @@ import sys
 import getopt
 import json
 import time
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+import pandas as pd
 
 # This implements the NLP pipeline
 
@@ -13,7 +15,7 @@ def main(argv):
 
     # Usage
     try:
-      opts, args = getopt.getopt(argv,"hi:j:a:c:",["dbfile=", "jsonString", "asin", "count"])
+      opts, args = getopt.getopt(argv,"hi:j:a:c:",["dbfile=", "jsonString=", "asin=", "count="])
     except getopt.GetoptError:
       print ('insights.py -i <dbfile> -j <jsonString> -a <asin> -c <count>')
       sys.exit(2)
@@ -162,21 +164,27 @@ def main(argv):
     extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patterns, items)
 
     # Convert all phrases to real words
-    extracted_pos_real = languageUtils.getRealWords(extracted_pos)
-    extracted_neg_real = languageUtils.getRealWords(extracted_neg)
+    extracted_pos_real = languageUtils.getRealWordsAll(extracted_pos)
+    extracted_neg_real = languageUtils.getRealWordsAll(extracted_neg)
 
+
+    # # Frequency distribution
+    # freqdist_pos = nltk.FreqDist(word for word in extracted_pos_real)
+    # most_common_pos = freqdist_pos.most_common()
+    # freqdist_neg = nltk.FreqDist(word for word in extracted_neg_real)
+    # most_common_neg = freqdist_neg.most_common()
 
     # Frequency distribution
-    freqdist_pos = nltk.FreqDist(word for word in extracted_pos_real)
+    freqdist_pos = nltk.FreqDist(word for word in extracted_pos)
     most_common_pos = freqdist_pos.most_common()
-    freqdist_neg = nltk.FreqDist(word for word in extracted_neg_real)
+    freqdist_neg = nltk.FreqDist(word for word in extracted_neg)
     most_common_neg = freqdist_neg.most_common()
 
-    # # Convert most common phrases to real words
-    # most_common_pos_real = languageUtils.getRealWords(most_common_pos)
-    # print(most_common_pos_real)
-    # most_common_neg_real = languageUtils.getRealWords(most_common_neg)
-    # print(most_common_neg_real)
+    # Convert most common phrases to real words
+    most_common_pos_real = languageUtils.getRealWords(most_common_pos)
+    print(most_common_pos_real)
+    most_common_neg_real = languageUtils.getRealWords(most_common_neg)
+    print(most_common_neg_real)
 
     # bi-gram and tri-gram features that are also our extracted phrases
     extracted_df_pos = names_scores_df_pos[names_scores_df_pos.feature_names.isin(extracted_pos_real)]
@@ -199,13 +207,13 @@ def main(argv):
 
     # featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, sentence_count )
     # Getting sentences with the positive phrases
-    out_json_s_pos = features.featuresAndContext(items, most_common_pos, sent_pos_review, 10, 10)
+    out_json_s_pos = features.featuresAndContext(items, most_common_pos_real, sent_pos_review, 10, 10)
     with open(output_file_pos, 'w') as jf:
         jf.write(out_json_s_pos)
     print("Pos phrases written to: " + output_file_pos)
 
     # Getting sentences with the negative phrases
-    out_json_s_neg = features.featuresAndContext(items, most_common_neg, sent_neg_review, 10, 10)
+    out_json_s_neg = features.featuresAndContext(items, most_common_neg_real, sent_neg_review, 10, 10)
     with open(output_file_neg, 'w') as jfn:
         jfn.write(out_json_s_neg)
     print("Neg phrases written to: " + output_file_neg)
