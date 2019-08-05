@@ -6,8 +6,8 @@ import sys
 import getopt
 import json
 import time
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-import pandas as pd
+# from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+# import pandas as pd
 from pprint import pprint
 
 # This implements the NLP pipeline
@@ -126,23 +126,23 @@ def main(argv):
     print('Found ' + str(len(items)) + ' significant items/nouns from the reviews')
     print(items)
 
-    # Good time to TFIDF
-    # On clean sentences
-    vectorizer_pos = TfidfVectorizer(ngram_range=(2,3))
-    tf_pos = vectorizer_pos.fit_transform(sent_pos_review_clean)
-    feature_names_pos = vectorizer_pos.get_feature_names()
-    phrase_scores_pos = vectorizer_pos.idf_
-    names_scores_df_pos = pd.DataFrame({'feature_names':feature_names_pos})
-    names_scores_df_pos['phrase_scores'] = pd.DataFrame(phrase_scores_pos)
-    print('TFIDF Data Frame size: ' + str(names_scores_df_pos.size) + ' For positive sentences')
-
-    vectorizer_neg = TfidfVectorizer(ngram_range=(2,3))
-    tf_neg = vectorizer_neg.fit_transform(sent_neg_review_clean)
-    feature_names_neg = vectorizer_neg.get_feature_names()
-    phrase_scores_neg = vectorizer_neg.idf_
-    names_scores_df_neg = pd.DataFrame({'feature_names':feature_names_neg})
-    names_scores_df_neg['phrase_scores'] = pd.DataFrame(phrase_scores_neg)
-    print('TFIDF Data Frame size: ' + str(names_scores_df_neg.size) + ' For negative sentences')
+    # # Good time to TFIDF
+    # # On clean sentences
+    # vectorizer_pos = TfidfVectorizer(ngram_range=(2,3))
+    # tf_pos = vectorizer_pos.fit_transform(sent_pos_review_clean)
+    # feature_names_pos = vectorizer_pos.get_feature_names()
+    # phrase_scores_pos = vectorizer_pos.idf_
+    # names_scores_df_pos = pd.DataFrame({'feature_names':feature_names_pos})
+    # names_scores_df_pos['phrase_scores'] = pd.DataFrame(phrase_scores_pos)
+    # print('TFIDF Data Frame size: ' + str(names_scores_df_pos.size) + ' For positive sentences')
+    #
+    # vectorizer_neg = TfidfVectorizer(ngram_range=(2,3))
+    # tf_neg = vectorizer_neg.fit_transform(sent_neg_review_clean)
+    # feature_names_neg = vectorizer_neg.get_feature_names()
+    # phrase_scores_neg = vectorizer_neg.idf_
+    # names_scores_df_neg = pd.DataFrame({'feature_names':feature_names_neg})
+    # names_scores_df_neg['phrase_scores'] = pd.DataFrame(phrase_scores_neg)
+    # print('TFIDF Data Frame size: ' + str(names_scores_df_neg.size) + ' For negative sentences')
 
     # Patterns that we want to extract
     # We think these are the ones that contain features
@@ -189,16 +189,16 @@ def main(argv):
     print('Most common phrases from the negative reviews: ')
     pprint(most_common_neg_real)
 
-    # bi-gram and tri-gram features that are also our extracted phrases
-    extracted_df_pos = names_scores_df_pos[names_scores_df_pos.feature_names.isin(extracted_pos_real)]
-    # print(extracted_df_pos.size)
-    print('Reduced TFIDF Data Frame size: ' + str(extracted_df_pos.size) + ' For positive sentences')
-    extracted_df_pos['freq'] = extracted_df_pos.apply(lambda row: freqdist_pos[row.feature_names], axis=1)
-
-    extracted_df_neg = names_scores_df_neg[names_scores_df_neg.feature_names.isin(extracted_neg_real)]
-    # print(extracted_df_neg.size)
-    print('Reduced TFIDF Data Frame size: ' + str(extracted_df_neg.size) + ' For negative sentences')
-    extracted_df_neg['freq'] = extracted_df_neg.apply(lambda row: freqdist_neg[row.feature_names], axis=1)
+    # # bi-gram and tri-gram features that are also our extracted phrases
+    # extracted_df_pos = names_scores_df_pos[names_scores_df_pos.feature_names.isin(extracted_pos_real)]
+    # # print(extracted_df_pos.size)
+    # print('Reduced TFIDF Data Frame size: ' + str(extracted_df_pos.size) + ' For positive sentences')
+    # extracted_df_pos['freq'] = extracted_df_pos.apply(lambda row: freqdist_pos[row.feature_names], axis=1)
+    #
+    # extracted_df_neg = names_scores_df_neg[names_scores_df_neg.feature_names.isin(extracted_neg_real)]
+    # # print(extracted_df_neg.size)
+    # print('Reduced TFIDF Data Frame size: ' + str(extracted_df_neg.size) + ' For negative sentences')
+    # extracted_df_neg['freq'] = extracted_df_neg.apply(lambda row: freqdist_neg[row.feature_names], axis=1)
 
     # Sort the items by support
     items.sort(key=lambda tup: tup[1], reverse=True)
