@@ -58,11 +58,14 @@ def loadTolistsAndClassify(file_d, filter_l = "", count = 0):
 
     for r in tqdm(file_d):
         if (filter_l and (r['asin'] == filter_l)) or not filter_l:
-            reviews_sent.append(r['reviewText'])
+            if r['reviewText'] not in reviews_sent:
+                reviews_sent.append(r['reviewText'])
             if ((r['overall'] == 1.0) or (r['overall'] == 2.0)):
-                reviews_neg_sent.append(r['reviewText'])
+                if r['reviewText'] not in reviews_neg_sent:
+                    reviews_neg_sent.append(r['reviewText'])
             else:
-                reviews_pos_sent.append(r['reviewText'])
+                if r['reviewText'] not in reviews_pos_sent:
+                    reviews_pos_sent.append(r['reviewText'])
 
             n = n+1
             if count > 0 and n == count:
