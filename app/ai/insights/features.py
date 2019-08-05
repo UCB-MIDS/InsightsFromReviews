@@ -318,15 +318,6 @@ def featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, se
     Output is returned as a JSON string
     """
 
-
-    # Latest time in a string
-    # timestr = time.strftime("%Y%m%d-%H%M%S")
-    # Outputfile
-    # print("File created at: " + timestr)
-    # output_file_name = "o_" + timestr + ".txt"
-    # output_json_name = "o_" + timestr + ".json"
-    # f= open(output_file_name,"a+")
-
     # Output JSON
     outDict = defaultdict(list)
     outJSON = ''
@@ -335,15 +326,15 @@ def featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, se
 
     p_count = 0
     # Go through the phrases and print sentences that contain them
-    for phrase, freq in sorted(opinion_phrases, key = lambda phrase_freq: phrase_freq[1], reverse = True):
-
+    # for phrase, freq in sorted(opinion_phrases, key = lambda phrase_freq: phrase_freq[1], reverse = True):
+    for phrase, freq in opinion_phrases:
         # f.write("\r\n")
         # f.write("---" + "Phrase > " + str(p_count) + " >>> " + phrase + "----\r\n\r\n")
         p_count += 1
         s_count = 0
-        summary = ''
+        # summary = ''
         for l in sentence_arr:
-            if languageUtils.normalise(phrase) in languageUtils.normalise(l):
+            if languageUtils.normalise(phrase) in languageUtils.normalise(languageUtils.clean(l, remove_stopwords=True)):
                 # f.write("---" + "example > " + str(s_count) + " >>> " + "----\r\n")
                 # f.write("%s\r\n" %(l))
                 outDict[phrase].append(l)
