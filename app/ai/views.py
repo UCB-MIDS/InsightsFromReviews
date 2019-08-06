@@ -41,6 +41,10 @@ def result(request, query_text_from_url='NO_QUERY'):
     asin_list = get_asin(query_text)
     print(query_text)
 
+    if len(asin_list) < 1:
+        response = "No Search result for : " + query_text + " Please try with another query!"
+        return HttpResponse(response)
+
 
     product_asin = str(asin_list[0])
     print("FROM result - asin_list[0] :  "+str(asin_list))
@@ -157,6 +161,10 @@ def update(request):
     print ("Now updating : " + query_text)
 
     asin_list = get_asin(query_text)
+
+    if len(asin_list) < 1:
+        response = "No Search result for : " + query_text + " Please try with another query!"
+        return HttpResponse(response)
 
     if len(asin_list) > 0:
         update_insights(str(asin_list[0]))
@@ -295,8 +303,8 @@ def get_asin(query_text):
 
     parsed_asin_list = parse_page(trim_response, parse_text_start, parse_text_end, 'list')
     parsed_ad_asin_list = parse_page(response, ad_parse_text_start, ad_parse_text_end, 'list')
-    print("parsed_ad_asin_list : " + str(parsed_ad_asin_list))
 
+    # print("parsed_ad_asin_list : " + str(parsed_ad_asin_list))
     for x in parsed_ad_asin_list:
         if x in parsed_asin_list:
             parsed_asin_list.remove(x)
