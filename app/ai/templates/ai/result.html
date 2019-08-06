@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Pacifico" />
     
-    {% load static %}
-   <link rel="stylesheet" type="text/css" href="{% static 'ai/style.css' %}">
+   
 
     <title>Actionable Insights</title>
   </head>
@@ -45,7 +44,7 @@
          <div class="card-body">
             <div class="card" >
                <div class="card-body">
-                  <h5 class="card-title">#1 Product Description</h5>
+                  <h6 class="card-title">#1</h6>
                   <table class="table table-striped">
                      <thead>
                         <tr>
@@ -63,8 +62,8 @@
                            <td><img src="{{product_image_url}}" height=200></td>
                         </tr>
                         <tr>
-                           <td>ASIN</td>
-                           <td>{{asin}}</td>
+                           <td>Price</td>
+                           <td>{{product_price}}</td>
                         </tr>
                         <tr>
                            <td>Reviews</td>
@@ -73,10 +72,6 @@
                               {{product_rating}} /  {{product_review_cnt}} Reviews
                            </td>
                         </tr>
-                        <tr>
-                           <td>Price</td>
-                           <td>{{product_price}}</td>
-                        </tr>
                      </tbody>
                   </table>
                </div>
@@ -84,7 +79,7 @@
 
             <div class="card" >
                <div class="card-body">
-                  <h5 class="card-title">Insights from Reviews</h5>
+                  <h6 class="card-title">Insights from Reviews</h6>
                   {% if insight_positive_list %}
                   {% for insight in insight_positive_list %}
                   <button class="btn btn-primary bg-success border-success" type="button" data-toggle="collapse" data-target="#{{ insight.0 }}" aria-expanded="false" aria-controls="{{ insight.0 }}">
@@ -136,7 +131,7 @@
                </div>
             </div>
             {% if insight_positive_list %}
-               Analysis updated on {{update_date}}
+               {{asin}} : Analysis updated on {{update_date}}
             {% endif %}
          </div>
       </div>
@@ -147,7 +142,7 @@
          <div class="card-body">
             <div class="card" >
                <div class="card-body">
-                  <h5 class="card-title">#2 Product Description</h5>
+                  <h6 class="card-title">#2</h6>
                   <table class="table table-striped">
                      <thead>
                         <tr>
@@ -165,8 +160,8 @@
                            <td><img src="{{product_image_url_2}}" height=200></td>
                         </tr>
                         <tr>
-                           <td>ASIN</td>
-                           <td>{{asin_2}}</td>
+                           <td>Price</td>
+                           <td>{{product_price_2}}</td>
                         </tr>
                         <tr>
                            <td>Reviews</td>
@@ -175,10 +170,6 @@
                               {{product_rating_2}} /  {{product_review_cnt_2}} Reviews
                            </td>
                         </tr>
-                        <tr>
-                           <td>Price</td>
-                           <td>{{product_price_2}}</td>
-                        </tr>
                      </tbody>
                   </table>
                </div>
@@ -186,7 +177,7 @@
 
             <div class="card" >
                <div class="card-body">
-                  <h5 class="card-title">Insights from Reviews</h5>
+                  <h6 class="card-title">Insights from Reviews</h6>
                   {% if insight_positive_list_2 %}
                   {% for insight_2 in insight_positive_list_2 %}
                   <button class="btn btn-primary bg-success border-success" type="button" data-toggle="collapse" data-target="#{{ insight_2.0 }}_2" aria-expanded="false" aria-controls="{{ insight_2.0 }}_2">
@@ -240,7 +231,7 @@
                </div>
             </div>
             {% if insight_positive_list_2 %}
-               Analysis updated on {{update_date_2}}
+               {{asin_2}} : Analysis updated on {{update_date_2}}
             {% endif %}
          </div>
       </div>
@@ -253,7 +244,7 @@
          <div class="card-body">
             <div class="card" >
                <div class="card-body">
-                  <h5 class="card-title">#3 Product Description</h5>
+                  <h6 class="card-title">#3</h6>
                   <table class="table table-striped">
                      <thead>
                         <tr>
@@ -271,8 +262,8 @@
                            <td><img src="{{product_image_url_3}}" height=200></td>
                         </tr>
                         <tr>
-                           <td>ASIN</td>
-                           <td>{{asin_3}}</td>
+                           <td>Price</td>
+                           <td>{{product_price_3}}</td>
                         </tr>
                         <tr>
                            <td>Reviews</td>
@@ -281,17 +272,13 @@
                               {{product_rating_3}} /  {{product_review_cnt_3}} Reviews
                            </td>
                         </tr>
-                        <tr>
-                           <td>Price</td>
-                           <td>{{product_price_3}}</td>
-                        </tr>
                      </tbody>
                   </table>
                </div>
             </div>
             <div class="card" >
                <div class="card-body">
-                  <h5 class="card-title">Insights from Reviews</h5>
+                  <h6 class="card-title">Insights from Reviews</h6>
                   {% if insight_positive_list_3 %}
                   {% for insight_3 in insight_positive_list_3 %}
                   <button class="btn btn-primary bg-success border-success" type="button" data-toggle="collapse" data-target="#{{ insight_3.0 }}_3" aria-expanded="false" aria-controls="{{ insight_3.0 }}_3">
@@ -343,7 +330,7 @@
                </div>
             </div>
             {% if insight_positive_list_3 %}
-               Analysis updated on {{update_date_3}}
+               {{asin_3}} : Analysis updated on {{update_date_3}}
             {% endif %}
          </div>
       </div>
@@ -389,15 +376,6 @@
             </div>
          </div>
       </div>
-
-      <br>
-      <br>
-      <br>
-      <footer class="footer bg-dark" style="height: 3rem;vertical-align:bottom;">
-         <div class="container bg-dark" style="vertical-align:bottom;">
-            <span class="text-muted bg-dark" style="vertical-align:bottom;">Data Science W210 Capstone</span>
-         </div>
-      </footer>
       <!-- Optional JavaScript 
          jQuery first, then Popper.js, then Bootstrap JS 
          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -419,5 +397,8 @@
              }
          });
       </script>
+
+       {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'ai/style.css' %}">
    </body>
 </html>

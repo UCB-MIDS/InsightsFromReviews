@@ -1,12 +1,11 @@
 h1 { font-family: Pacifico; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; }
-h3 { font-family: Pacifico; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; }
+h3 { font-family: Pacifico; font-size: 10px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 10.4px; }
 
-.btn, .form-control {
-  margin: 3px;
-}
+
 
 .card {
   margin: 10px;
+  font-size: 12px;
 }
 
 .footer {
@@ -38,4 +37,13 @@ h3 { font-family: Pacifico; font-size: 14px; font-style: normal; font-variant: n
   background: #ddd;
   text-decoration: none;
   color: #555;
+}
+
+table tbody tr td button {
+  font-size: 12px;
+}
+
+.btn, .form-control {
+  margin: 3px;
+  font-size: 12px;
 }
