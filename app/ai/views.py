@@ -241,9 +241,9 @@ def get_insights(asin, insight_type):
 
     for i in insights:
         if (i.insight_phrase in insight_dict.keys()):
-            insight_dict[i.insight_phrase] = insight_dict[i.insight_phrase] +  "<br><br>" + "&#8208;&nbsp" + cleanhtml(i.insight_text)
+            insight_dict[i.insight_phrase] = insight_dict[i.insight_phrase] +  "<br><br>" + "&#8208;&nbsp" + cleanhtml(i.insight_text).replace('<','').replace('>','')
         else:
-            insight_dict[i.insight_phrase] = "&#8208;&nbsp" + i.insight_text + cleanhtml(i.insight_text)
+            insight_dict[i.insight_phrase] = "&#8208;&nbsp" + cleanhtml(i.insight_text).replace('<','').replace('>','')
     
     for i in insights_seq:
         insight_seq_dict[i.insight_phrase] = i.insight_seq
