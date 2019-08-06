@@ -425,27 +425,45 @@ def getRealWords(phrases):
     """ Unlemmatize and unstem using the dictionary created earlier """
     p = inflect.engine()
     new_phrases=[]
+
     for a in tqdm(phrases):
         newword="";
         found=False;
+
         for b in a[0].split():
+
             for x in lem_word_mapping:
+                found = False
                 #print(x)
                 #print(b)
-                if b==x:
+                if b == x:
                     found=True
-                    sing=(lem_word_mapping[x] if p.singular_noun(lem_word_mapping[x])==False else p.singular_noun(lem_word_mapping[x]))
+
+                    if p.singular_noun(lem_word_mapping[x]):
+                        sing = p.singular_noun(lem_word_mapping[x])
+                    else:
+                        sing = lem_word_mapping[x]
+
+                    # sing=(lem_word_mapping[x] if p.singular_noun(lem_word_mapping[x])==False else p.singular_noun(lem_word_mapping[x]))
+
                     if newword=="":
                         newword = newword + sing
                     else:
                         newword = newword + " " +  sing
+
+                    if found == True:
+                        break
+
+
             if found==False:
                 if newword=="":
                     newword = newword + b
                 else:
                     newword = newword + " " +  b
                     #print(newword)
+
         new_phrases.append((newword,a[1]))
+
     print('Converted ' + str(len(phrases)) + ' lemma phrases to ' + str(len(new_phrases)) + ' real word phrases')
     return new_phrases
 
@@ -458,15 +476,27 @@ def getRealWordsAll(phrases):
         found=False;
         for b in a.split():
             for x in lem_word_mapping:
+                found = False
                 #print(x)
                 #print(b)
-                if b==x:
+                if b == x:
                     found=True
-                    sing=(lem_word_mapping[x] if p.singular_noun(lem_word_mapping[x])==False else p.singular_noun(lem_word_mapping[x]))
+
+                    if p.singular_noun(lem_word_mapping[x]):
+                        sing = p.singular_noun(lem_word_mapping[x])
+                    else:
+                        sing = lem_word_mapping[x]
+
+                    # sing=(lem_word_mapping[x] if p.singular_noun(lem_word_mapping[x])==False else p.singular_noun(lem_word_mapping[x]))
+
                     if newword=="":
                         newword = newword + sing
                     else:
                         newword = newword + " " +  sing
+
+                    if found == True:
+                        break
+
             if found==False:
                 if newword=="":
                     newword = newword + b
