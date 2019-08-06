@@ -8,6 +8,7 @@ from .models import AmazonReview, Insight, AmazonProduct
 from django.db.models import Max
 
 import time
+import re
 import random
 import requests
 import datetime
@@ -201,7 +202,6 @@ def update_insights(product_asin):
         if len(out_json_s_pos_dict) > 0:
             for x in out_json_s_pos_dict:
                 x_list = out_json_s_pos_dict.get(x)
-                cnt = 0
                 for y in x_list:
                     insight = Insight(asin=product_asin, update_date=today_dt, insight_seq=cnt, insight_type='P',\
                         insight_phrase=x, insight_text=y)
@@ -211,7 +211,6 @@ def update_insights(product_asin):
         if len(out_json_s_neg_dict) > 0:
             for x in out_json_s_neg_dict:
                 x_list = out_json_s_neg_dict.get(x)
-                cnt = 0
                 for y in x_list:
                     insight = Insight(asin=product_asin, update_date=today_dt, insight_seq=cnt, insight_type='N',\
                         insight_phrase=x, insight_text=y)
@@ -233,49 +232,31 @@ def get_insights(asin, insight_type):
         for p in insight:
             update_dt = p.update_date
 
-    insights = Insight.objects.raw("SELECT id, insight_phrase, insight_text FROM ai_insight WHERE asin= %s AND insight_type = %s AND update_date = %s ORDER BY update_date DESC ", [asin, insight_type, update_dt])
-    insight_list = []
-    cnt = 0
-    temp_phrase = ""
-    temp_text = ""
-    for i in insights:
-        if(temp_text == ""):
-            temp_text = "&#8208;&nbsp" + i.insight_text.replace('<',' ').replace('>',' ')
-        else:
-            temp_text = temp_text + " <br><br> " + "&#8208;&nbsp" + i.insight_text.replace('<',' ').replace('>',' ')
+    insights = Insight.objects.raw("SELECT id, insight_phrase, insight_text FROM ai_insight WHERE asin= %s AND insight_type = %s AND update_date = %s ORDER BY insight_phrase DESC, insight_seq ASC ", [asin, insight_type, update_dt])
+    insights_seq = Insight.objects.raw("SELECT id, insight_phrase, insight_seq FROM ai_insight WHERE asin= %s AND insight_type = %s AND update_date = %s ORDER BY insight_seq ASC ", [asin, insight_type, update_dt])
 
-        if (temp_phrase != i.insight_phrase):
-            insight_list.append(['insight_'+insight_type+str(cnt), i.insight_phrase, temp_text])
-            temp_text = ""
-            cnt = cnt + 1
-        temp_phrase = i.insight_phrase
-        
+    insight_dict = {}
+    insight_seq_dict = {}
+    insight_list = []
+
+    for i in insights:
+        if (i.insight_phrase in insight_dict.keys()):
+            insight_dict[i.insight_phrase] = insight_dict[i.insight_phrase] +  "<br><br>" + "&#8208;&nbsp" + cleanhtml(i.insight_text)
+        else:
+            insight_dict[i.insight_phrase] = "&#8208;&nbsp" + i.insight_text + cleanhtml(i.insight_text)
     
-    print(" ###  insight_type : " + insight_type)
-    print(" ###  insight_list : " + str(insight_list))
+    for i in insights_seq:
+        insight_seq_dict[i.insight_phrase] = i.insight_seq
+
+    cnt = 0
+    listofTuples = sorted(insight_seq_dict.items() ,  key=lambda x: x[1])
+    for elem in listofTuples:
+        if (len(elem[0].split()) > 1): 
+            insight_list.append(['insight_'+insight_type+str(cnt), elem[0], insight_dict[elem[0]] ])
+            cnt = cnt + 1
+
     return insight_list
 
-
-def test_insights():
-    test_review = [{"reviewText":"A true cast iron pan is super smooth.", "overall":5.0},
-        {"reviewText":"Enter the Lodge 12 inch cast iron skillet.", "overall":4.0},
-        {"reviewText":"Just wash with hot water, without soap.", "overall":3.0},
-        {"reviewText":"This is an absolutely amazing skillet!!  I use it ALL the time!!  I re-season it a bit as well to keep it going strong!", "overall":4.0},
-        {"reviewText":"I wish I'd gotten a good cast iron skillet years ago, but I do enjoy making up for lost time!", "overall":4.0},
-        {"reviewText":"My mother and mother-in-law both cook with skillets that have been well seasoned, and I'm very happy to achieve the same with mine.I love using my Cast Iron skillets just love them.", "overall":4.0},
-        {"reviewText":"I like all my cast iron. This one though the tissue I wiped it with was black and wouldn't stop. It peeled a bit on the handle. I didn't get it. Out of all of my iron ware this one was so disgusting I washed it with soap. It's good now.", "overall":4.0},
-        {"reviewText":"Just say no to chemical treatments on non stick pans, get yourself and your friends a few sizes of cast iron and have pans that you can pass down to your children, without all those unknown chemicals that are such a part of pans for the last few decades.", "overall":4.0},
-        {"reviewText":"I've always bought the regular Lodge skillets and loved them.  Went with the pre-seasoned this time because I wanted this size.Wow, what a pain. badly pre-seasoned!). The coating flaked off, got my hands black, and smelled really rusty. This was horrible.I'm used to cast iron, for sure.", "overall":1.0},
-        {"reviewText":"Only hot water and maybe salt if you need an abrasive.", "overall":2.0},
-        {"reviewText":"I'm not a cook and didn't know what cast iron cooked like.", "overall":2.0},
-        {"reviewText":"This was horrible.I'm used to cast iron, for sure.", "overall":1.0},
-        {"reviewText":"Immediately, I noticed this pan seemed thinner and cheaper made. I noticed the bottom center seemed to be deteriorating. After 5 uses, I noticed what seems to be a crack forming. Now it will be thrown away. Very disappointed!", "overall":2.0},
-        {"reviewText":"Oil first, heat it, then food in. I'm very disappointed. This is a great skillet, especially for the price.", "overall":1.0}]
-
-    out_json_s_pos, out_json_s_neg = insights.main(["-j", test_review])
-
-    print ("++++ Positive : " + out_json_s_pos)
-    print ("---- Negative : " + out_json_s_neg)
 
 def asin_scrape(query_text):
     print("query_text : " + str(query_text))
@@ -498,3 +479,9 @@ def trim_string_pre(original_text, parse_text_start):
     if(original_text.find(parse_text_start) > 0):
         original_text_processing = original_text[original_text.find(parse_text_start)+len(parse_text_start):]
     return original_text_processing
+
+
+def cleanhtml(raw_html):
+  cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+  cleantext = re.sub(cleanr, '', raw_html)
+  return cleantext
