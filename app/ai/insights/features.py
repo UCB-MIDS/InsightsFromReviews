@@ -312,7 +312,7 @@ def extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patter
     print("Extracted : " + str(len(extracted_pos)) + " phrases from positive sentences")
     print("Extracted : " + str(len(extracted_neg)) + " phrases from negative sentences")
 
-    return extracted_neutral, extracted_pos, extracted_neg
+    return extracted_neutral, extracted_pos, extracted_neg, neutral_review, positive_review, negative_review
 
 # Extract sentences with features
 def featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, sentence_count ):

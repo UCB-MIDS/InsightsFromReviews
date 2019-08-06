@@ -161,8 +161,12 @@ def main(argv):
     extracted_neg = []
     extracted_neutral = []
 
+    positive_review = []
+    negative_review = []
+    neutral_review = []
+
     # extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrases(sent_pos_review, sent_neg_review, feature_patterns, items)
-    extracted_neutral, extracted_pos, extracted_neg = features.extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patterns, items)
+    extracted_neutral, extracted_pos, extracted_neg, neutral_review, positive_review, negative_review = features.extractFeaturePhrasesStrict(sent_pos_review, sent_neg_review, feature_patterns, items)
 
     # Convert all phrases to real words
     extracted_pos_real = languageUtils.getRealWordsAll(extracted_pos)
@@ -180,10 +184,24 @@ def main(argv):
     most_common_pos = freqdist_pos.most_common(20)
     print('Most common RAW phrases from the positive reviews: ')
     pprint(most_common_pos)
+
+    # if there's one entry with freq > 1, remove others with freq == 1
+    if freqdist_pos[freqdist_pos.max()] > 1:
+        most_common_pos = [t for t in most_common_pos if t[1] > 1]
+
+    # print('Most common RAW phrases from the positive reviews: ')
+    # pprint(most_common_pos)
+
     freqdist_neg = nltk.FreqDist(word for word in extracted_neg)
     most_common_neg = freqdist_neg.most_common(20)
     print('Most common RAW phrases from the negative reviews: ')
     pprint(most_common_neg)
+
+    if freqdist_neg[freqdist_neg.max()] > 1:
+        most_common_neg = [t for t in most_common_neg if t[1] > 1]
+
+    # print('Most common RAW phrases from the negative reviews: ')
+    # pprint(most_common_neg)
 
     # Convert most common phrases to real words
     most_common_pos_real = languageUtils.getRealWords(most_common_pos)
@@ -218,13 +236,13 @@ def main(argv):
 
     # featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, sentence_count )
     # Getting sentences with the positive phrases
-    out_json_s_pos = features.featuresAndContext(items, most_common_pos_real, sent_pos_review, 10, 10)
+    out_json_s_pos = features.featuresAndContext(items, most_common_pos_real, positive_review, 10, 10)
     with open(output_file_pos, 'w') as jf:
         jf.write(out_json_s_pos)
     print("Positive phrases written to: " + output_file_pos)
 
     # Getting sentences with the negative phrases
-    out_json_s_neg = features.featuresAndContext(items, most_common_neg_real, sent_neg_review, 10, 10)
+    out_json_s_neg = features.featuresAndContext(items, most_common_neg_real, negative_review, 10, 10)
     with open(output_file_neg, 'w') as jfn:
         jfn.write(out_json_s_neg)
     print("Negative phrases written to: " + output_file_neg)
