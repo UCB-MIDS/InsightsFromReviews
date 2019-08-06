@@ -131,7 +131,9 @@
                </div>
             </div>
             {% if insight_positive_list %}
-               {{asin}} : Analysis updated on {{update_date}}
+               Product ASIN : {{asin}} / Analysis updated on {{update_date}}
+            {% else %}
+               Product ASIN : {{asin}}
             {% endif %}
          </div>
       </div>
@@ -231,7 +233,9 @@
                </div>
             </div>
             {% if insight_positive_list_2 %}
-               {{asin_2}} : Analysis updated on {{update_date_2}}
+               Product ASIN : {{asin_2}} / Analysis updated on {{update_date_2}}
+            {% else %}
+               Product ASIN : {{asin_2}}
             {% endif %}
          </div>
       </div>
@@ -330,7 +334,9 @@
                </div>
             </div>
             {% if insight_positive_list_3 %}
-               {{asin_3}} : Analysis updated on {{update_date_3}}
+               Product ASIN : {{asin_3}} / Analysis updated on {{update_date_3}}
+            {% else %}
+               Product ASIN : {{asin_3}}
             {% endif %}
          </div>
       </div>
