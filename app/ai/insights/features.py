@@ -352,7 +352,7 @@ def featuresAndContext(item_arr, opinion_phrases, sentence_arr, phrase_count, se
         # print(summary)
         if p_count == phrase_count:
             break
-    outJSON = json.dumps(outDict, sort_keys = True, indent = 4)
+    outJSON = json.dumps(outDict, sort_keys = False, indent = 4)
     # with open(output_json_name, 'w') as jf:
         # json.dump(outDict, jf, sort_keys = True, indent=4)
 
