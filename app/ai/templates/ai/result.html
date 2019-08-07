@@ -102,19 +102,11 @@
                   </p>
                   {% if insight_positive_list %}
                   {% for insight in insight_positive_list %}
-                  {% if forloop.first %}
-                  <div class="insight-text collapse show" id="{{ insight.0 }}">
-                     <div class="card card-body " >
-                        {{ insight.2|safe }}
-                     </div>
-                  </div>
-                  {% else %}
                   <div class="insight-text collapse" id="{{ insight.0 }}">
                      <div class="card card-body " >
                         {{ insight.2|safe }}
                      </div>
                   </div>
-                  {% endif %}
                   {% endfor %}
                   {% else %}
                   {% endif %}
@@ -203,21 +195,12 @@
                   </p>
                   {% if insight_positive_list_2 %}
                   {% for insight_2 in insight_positive_list_2 %}
-                  {% if forloop.first %}
-                  <div class="insight-text collapse show" id="{{ insight_2.0 }}_2">
-                     <div class="card card-body " >
-                        {{ insight_2.2|safe }}
-                     </div>
-                  </div>
-                  {% else %}
                   <div class="insight-text collapse" id="{{ insight_2.0 }}_2">
                      <div class="card card-body " >
                         {{ insight_2.2|safe }}
                      </div>
                   </div>
-                  {% endif %}
                   {% endfor %}
-                  {% else %}
                   {% endif %}
 
                   {% if insight_negative_list_2 %}
@@ -228,7 +211,6 @@
                      </div>
                   </div>
                   {% endfor %}
-                  {% else %}
                   {% endif %}
                </div>
             </div>
@@ -305,21 +287,12 @@
                   </p>
                   {% if insight_positive_list_3 %}
                   {% for insight_3 in insight_positive_list_3 %}
-                  {% if forloop.first %}
-                  <div class="insight-text collapse show" id="{{ insight_3.0 }}_3">
-                     <div class="card card-body " >
-                        {{ insight_3.2|safe }}
-                     </div>
-                  </div>
-                  {% else %}
                   <div class="insight-text collapse" id="{{ insight_3.0 }}_3">
                      <div class="card card-body " >
                         {{ insight_3.2|safe }}
                      </div>
                   </div>
-                  {% endif %}
                   {% endfor %}
-                  {% else %}
                   {% endif %}
                   {% if insight_negative_list_3 %}
                   {% for insight_3 in insight_negative_list_3 %}
