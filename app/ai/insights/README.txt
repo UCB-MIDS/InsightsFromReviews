@@ -1,3 +1,5 @@
+Python command line and API for getting insights out of reviews
+
 Usage
 
 python insights.py -i dbfile -j jsonString -a asin
