@@ -2,6 +2,12 @@
 We're trying to extract actionable information from the reviews (like product features that are liked, disliked or missing). 
 The word clouds below prove that such information is not available by the count based methods. 
 
+## The MVP is hosted here till we find a permanant place (after a few iterations)
+http://insightsfromreviews.com/
+
+## Below is a video introduction to the site
+![](./pictures/demoSmall.gif)
+
 ## The project page at Berkeley
 https://www.ischool.berkeley.edu/projects/2019/actionable-insights-understanding-voice-customer-amazon
 
