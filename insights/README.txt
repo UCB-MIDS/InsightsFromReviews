@@ -1,3 +1,5 @@
+The insights module, outside the context of our web application
+
 Usage
 
 python insights.py -i dbfile -j jsonString -a asin
