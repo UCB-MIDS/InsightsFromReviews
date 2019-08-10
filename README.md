@@ -13,13 +13,13 @@ https://www.ischool.berkeley.edu/projects/2019/actionable-insights-understanding
 ## The presentation provides more details of the project
 https://docs.google.com/presentation/d/1E97AgDOd7hyuDw1DYvUUuBT34waVcrkkE55XwsYoQAc/edit#slide=id.g5e3cd57fe6_0_6
 
-# The word clouds below were the first step of our EDA
+## The word clouds below were the first step of our EDA
 
-## Inside the reviews for Home and Kitchen products from Amazon
+### Inside the reviews for Home and Kitchen products from Amazon
 
 ![](./pictures/wc-home-kitchen.png)
 
-## Inside the reviews for Electronics
+### Inside the reviews for Electronics
 
 ![](./pictures/wc-electronics.png)
 
